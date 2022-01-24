@@ -1,10 +1,13 @@
-# Parasol Motion Planning Library
+# Parasol Planning Library
 
-The PMPL library is a general code base for studying motion planning algorithms.
-This file lists the package dependencies for PMPL and how to install them.
+The PPL library is a general code base for studying motion planning algorithms.
+This file lists the package dependencies for PPL and how to install them.
 > Tested on Ubuntu 20.04
 
 ## Requirements
+The utilities for PPL can be found in [PPL utils](https://github.com/parasol-ppl/PPL_utils
+This repo is for archival copies of external libraries that are used by [PPL](https://github.com/parasol-ppl/PPL)
+
 Required Packages:
 - build-essential
 - libboost-all-dev
