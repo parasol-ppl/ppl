@@ -5,8 +5,7 @@ This file lists the package dependencies for PPL and how to install them.
 > Tested on Ubuntu 20.04
 
 ## Requirements
-The utilities for PPL can be found in [PPL utils](https://github.com/parasol-ppl/PPL_utils
-This repo is for archival copies of external libraries that are used by [PPL](https://github.com/parasol-ppl/PPL)
+The utilities for PPL can be found in [PPL utils](https://github.com/parasol-ppl/PPL_utils)
 
 Required Packages:
 - build-essential
