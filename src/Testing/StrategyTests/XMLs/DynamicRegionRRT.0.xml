@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/3D/3d.env"/>
+    <Robot label="boxy" filename="../Envs/3D/boxy.robot"/>
+
+    <Task label="query" robot="boxy">
+      <StartConstraints>
+        <CSpaceConstraint point="0 0 0 0 0 0"/>
+      </StartConstraints>
+
+      <GoalConstraints>
+        <CSpaceConstraint point="20 5 10 0.2 0.8 0.5"/>
+      </GoalConstraints>
+    </Task>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="rapid" method="RAPID"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="Nearest" dmLabel="euclidean" unconnected="false"
+        k="1"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="rapid"/>
+    </Samplers>
+
+    <Extenders>
+      <BasicExtender label="BERO" debug="true" dmLabel="euclidean"
+        vcLabel="rapid" maxDist="10." minDist=".01"/>
+    </Extenders>
+
+    <MapEvaluators>
+      <RRTQuery label="RRTQuery"
+        nfLabel="Nearest" exLabel="BERO" fullRecreatePath="false" debug="true"/>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <DynamicRegionRRT label="DynamicRegionRRT"
+        growthFocus="0.01" dmLabel="euclidean" nfLabel="Nearest" vcLabel="rapid"
+        gtype="UNDIRECTED_TREE" debug="true" growGoals="false"
+        extenderLabel="BERO">
+        <Evaluator label="RRTQuery"/>
+      </DynamicRegionRRT>
+    </MPStrategies>
+
+    <Solver mpStrategyLabel="DynamicRegionRRT" seed="0"
+      baseFilename="../Scratch/DynamicRegionRRT"/>
+
+  </Library>
+
+</MotionPlanning>

@@ -1,0 +1,11 @@
+// The following is the parallel components of PMPL, along with the detailed
+// descriptions and subsections. All subsections should appear in the desired
+// order of appearance, and are defined by @defgroup. Source code that belongs
+// in a section or subsection should indicate as such with @addtogroup.
+
+////////////////////////////////////////////////////////////////////////////////
+/// @defgroup DeadCode Dead Code
+/// @brief Algorithms which are not currently implemented to work in current
+///        trunk.
+////////////////////////////////////////////////////////////////////////////////
+

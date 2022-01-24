@@ -1,0 +1,60 @@
+Roadmap Statistics:
+
+  Number of Nodes: 202
+  Number of Edges: 1834
+
+  There are 2 connected components:
+    CC[0]: 201 (vid 0)
+    CC[1]: 1 (vid 195)
+
+
+Sampler Statistics                                            Attempts Successes
+
+  UniformRandomSampler::UniformRandomFree                          202       191
+  All Samplers                                                     202       191
+  Success Rate: 94.6%
+
+
+Local Planner Statistics                        Attempts Connections    CD Calls
+
+  StraightLine::sl                                  1021         931      852078
+
+
+Collision Detection Calls                                                  Count
+
+  StraightLine::sl::IsConnectedSLBinary                                   852073
+  UniformRandomSampler::UniformRandomFree::Sampler                           202
+  All Collision Detectors                                                 852275
+
+
+Other Statistics                                                           Value
+
+  Graph Search                                                                 1
+  QueryMethod::Query::FoundPath                                                1
+
+
+Averages                                                         Value     Count
+
+  NeighborhoodConnector::Closest::CacheHitRatio                 0.0392      2017
+
+
+Clock Name                                                        Time (Seconds)
+
+  BruteForceNF::Nearest::FindNeighbors                                    0.0621
+  CCTracker::AddEdge                                                       0.005
+  CCTracker::AddVertex                                                         0
+  MPLibrary::Initialize                                                        0
+  NeighborhoodConnector::Closest::Connect                                   13.3
+  QueryMethod::GeneratePath                                              0.00364
+  QueryMethod::Query                                                      0.0111
+  StraightLine::sl::IsConnected                                             12.5
+  TogglePRMStrategy::ConnectHelper                                          13.3
+  TogglePRMStrategy::GenerateNodes                                        0.0223
+  TogglePRMStrategy::TogglePRM::Connect                                 0.000832
+  TogglePRMStrategy::TogglePRM::EvaluateMap                               0.0111
+  TogglePRMStrategy::TogglePRM::GenerateGoals                           0.000296
+  TogglePRMStrategy::TogglePRM::GenerateStart                           0.000139
+  TogglePRMStrategy::TogglePRM::InitAndRun                                  13.3
+  TogglePRMStrategy::TogglePRM::Initialize                                0.0013
+  TogglePRMStrategy::TogglePRM::Run                                         13.3
+  UniformRandomSampler::UniformRandomFree::Sample                         0.0228

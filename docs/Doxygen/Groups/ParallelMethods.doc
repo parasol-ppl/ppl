@@ -1,0 +1,11 @@
+// The following is the parallel components of PMPL, along with the detailed
+// descriptions and subsections. All subsections should appear in the desired
+// order of appearance, and are defined by @defgroup. Source code that belongs
+// in a section or subsection should indicate as such with @addtogroup.
+
+////////////////////////////////////////////////////////////////////////////////
+/// @defgroup ParallelMethods Parallel Methods
+/// The parallel components of PMPL are:
+////////////////////////////////////////////////////////////////////////////////
+
+

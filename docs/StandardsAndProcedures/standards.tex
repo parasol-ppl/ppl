@@ -1,0 +1,603 @@
+\documentclass[12pt]{article}
+
+\usepackage{algorithmic}
+\usepackage{fullpage}
+\usepackage{parskip}
+\usepackage{url}
+
+\usepackage[usenames]{color}
+\usepackage{listings}
+\definecolor{LightGrey}{rgb}{0.9,0.9,1.0}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\lstdefinestyle{C++}{language=C++,%
+  identifierstyle=\color{black},
+  backgroundcolor=\color{LightGrey},
+  showstringspaces=false,
+  columns=fullflexible,
+  basicstyle=\sffamily,
+  commentstyle=\color{gray},
+  moredelim=**[is][\color{white}]{~}{~},
+  literate={=>}{{$\Rightarrow\;$}}1 {->}{{$\rightarrow{}$}}1 %
+  {<-}{{$\leftarrow$}}1 {<:}{{$\subtype{}\ $}}1 {*}{{$^*$}}1 %
+  {\{}{{$\{$}}1 {\}}{{$\}$}}1 {<}{{$<$}}1 {>}{{$>$}}1,
+}
+\lstdefinelanguage{XML}{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  identifierstyle=\color{darkblue},
+}
+\lstdefinestyle{XML}{
+  language=XML,
+  backgroundcolor=\color{LightGrey},
+  showstringspaces=false,
+  columns=fullflexible,
+  basicstyle=\ttfamily,
+}
+
+\newcommand{\pmpl}{PMPL}
+\newcommand{\gforge}{\texttt{GForge}}
+
+\title{\Large \bf Standards and Procedures of \pmpl}
+\author{Jory Denny and Read Sandstr\"{o}m and Shawna Thomas and Nancy M. Amato}
+
+\begin{document}
+
+\lstset{style=C++}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+This document outlines the standards for all procedures within \pmpl. This
+ranges from coding standards, to testing standards, to documentation standards,
+etc. Everyone will be expected to adhere to these standards.
+
+\clearpage
+\pagestyle{plain}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Check-in procedure
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Check-in Procedure}
+The following procedure will occur anytime a check-in will take place within
+\pmpl. No warnings or errors are permitted in check-ins.
+\begin{algorithmic}[1]
+\STATE The check-in should be documented in a task on \gforge\ (for\
+non-simplistic check-ins).
+\STATE One person will check over correctness and testing for proposed code.
+This person should be an experienced group member in the component of \pmpl\
+related to the check-in. The discussion of correctness should be documented on
+\gforge.
+\STATE A separate person shall check over the coding and documentation standards
+set forth within this document. This person can be any member of the motion
+planning group and should be as nitpicky as possible. Any discussion of fixes in
+standards should be documented on \gforge.
+\STATE If the check-in involves a new algorithm, the documentation for \pmpl\
+must be augmented to include this new algorithm.
+\STATE Once approval is made on correctness and standards, the check-in can be
+made and \gforge\ task closed.
+\STATE Back up validation shall occur during the \pmpl\ nightly tests, person
+who checks in the code is responsible for fixing warnings and errors caused by
+the check-in.
+\end{algorithmic}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Coding Standards
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Coding Standards}
+
+\subsection{\texttt{.h/.cpp}}
+All classes and files will be split between \texttt{.h/.cpp} format when
+possible, i.e., non-template classes/functions. All \texttt{.h} files should
+have \#define guards with the name of the file in all caps, with \texttt{\_}s
+separating words and \texttt{\_H\_} at the end. For example: for
+\texttt{ExampleClass.h} -- \texttt{PMPL\_EXAMPLE\_CLASS\_H\_}.
+
+\begin{lstlisting}
+#ifndef PMPL_EXAMPLE_CLASS_H_
+#define PMPL_EXAMPLE_CLASS_H_
+
+class Class;
+
+#endif
+\end{lstlisting}
+
+Newer files will include `\texttt{PMPL\_}' at the front of the include guard to
+further reduce the possibility of name collision with an external library.
+Please use this prefix in all new include guards.
+
+\subsection{Naming}
+
+\subsubsection{\#define}
+All \#define preprocessor commands should be named in all capital letters, with
+\_s separating words.
+
+\begin{lstlisting}
+#define MY_DEFINE
+\end{lstlisting}
+
+When possible, \#defines should be avoided and use constant functions instead.
+This is the C++ style.
+
+\subsubsection{Types}
+All types, being all classes, structs, typedefs, enums, etc, should begin
+with a capital letter and be in camel casing format (i.e., each successive word
+will be capitalized).
+
+\begin{lstlisting}[mathescape]
+class MyClass;
+struct MyStruct;
+typedef int MyInt;
+enum MyEnum {Value1, Value2, Value3};
+\end{lstlisting}
+
+\paragraph{Pointer and Reference Type Specification}
+
+When declaring a variable to be a pointer or reference the * or \& should be
+adjacent to the type:
+
+\begin{lstlisting}
+Type* pointerName;
+Type& referenceName;
+\end{lstlisting}
+
+\subsubsection{Enums}
+Enum values should be named like types, i.e, camel casing beginning with a
+capital letter.
+
+\begin{lstlisting}[mathescape]
+enum MyEnum {Value1, Value2, Value3};
+\end{lstlisting}
+
+\subsubsection{Functions}
+Functions shall be names with camel casing beginning with a capital letter.
+
+\begin{lstlisting}
+void MyFunction();
+\end{lstlisting}
+
+\subsubsection{Variables}
+
+All variables should be named in camel casing beginning with a lowercase letter.
+
+\begin{lstlisting}
+int myInt;
+\end{lstlisting}
+
+\paragraph{Member/class variables}
+
+All member variables should begin with an m\_. No type specification is
+necessary (i.e., no m\_pVariable for a pointer).
+
+
+\begin{lstlisting}[mathescape]
+class MyClass {
+  public:
+    int m_myInt;
+}
+\end{lstlisting}
+
+\paragraph{Function parameters}
+
+All function parameters should begin with an \_.
+
+\begin{lstlisting}
+int MyFunction(int _a, int _b);
+\end{lstlisting}
+
+\subsubsection{Naming Exceptions}
+
+The following cases are exempt from naming conventions for language specific
+reasons.
+
+\begin{itemize}
+
+  \item Functions defining iterators, namely, \texttt{begin()}, \texttt{end()},
+    and the iterator typedef. This is for compatability with \texttt{auto}
+    keyword for range based for loops.
+
+  \item In classes which extend part of the STL, the methods which override an
+    STL class's member function must be named against our standard, obviously.
+
+\end{itemize}
+
+\subsection{XML}
+Similarly to the class and variable names, within the XML, tags should be camel
+cased beginning with a capital letter and variables should be camel cased
+beginning with a lowercase letter.
+
+\lstset{style=XML}
+\begin{lstlisting}
+<MyXMLTag label="label" myXMLVariable="false"/>
+<MyXMLTagWithChildren label="label2">
+  <Child method="label"/>
+  <Child method="label2"/>
+</MyXMLTagWithChildren>
+\end{lstlisting}
+\lstset{style=C++}
+
+When loading labels for \pmpl\ methods, e.g., distance metrics, the variable
+name should be the \pmpl\ acronym for that component with Label. So for a
+distance metric label variable it should be named dmLabel, a validity checker
+label should be vcLabel, etc. Acronyms are as follows:
+
+\begin{itemize}
+  \item Distance Metric - dm
+  \item Validity Checker - vc
+  \item NeighborhoodFinder - nf
+  \item Sampler - s
+  \item Local Planner - lp
+  \item Connector - c
+  \item Map Evaluator - me
+  \item Metric - m
+  \item Extender - e
+  \item Path Modifier - pm
+  \item Motion Planning Strategy - mps
+\end{itemize}
+
+\subsection{Spaces/Tabbing}
+All tab characters should be represented by 2 spaces (easy to make default in
+all editors, vim is recommended). There should be no trailing white space at the
+end of lines (this causes unnecessary conflicts with in SVN).
+
+\subsection{Line length}
+All lines of code should be a reasonable length for code clarity. 80 characters
+is an expected line limit. Though this is not a strictly enforced standard,
+please try to adhere as best as possible to accomodate those working on smaller
+screens.
+
+\subsection{Curly Braces}
+Curly braces used in control flow, function definitions, or class definitions
+should be placed on the same line as the statement. It is recommended that a
+space occurs before the curly brace, e.g., if() \{ NOT if()\{.
+
+\begin{lstlisting}
+class MyClass {
+  void MyFunction() {
+    while(1) {
+    }
+  }
+}
+\end{lstlisting}
+
+Additionally, if the body of control flow structures is one line, curly braces
+are not required, and the body must appear on a new line.
+
+\begin{lstlisting}
+if(true)
+  DoSomething();
+\end{lstlisting}
+
+\subsection{Function Call/Declaration/Definition}
+Function calls or declarations which are "long" should be split between multiple
+lines when necessary to aid in reading the code.
+
+Definitions of member functions should be outside the class definition, even for
+one-line functions (this helps fully separate a class's implementation from its
+interface). The exception here is for small classes which serve as containers or
+functors: in these cases, member definitions may be placed directly within the
+class.
+
+Definitions shall be formatted with the template, return type, class name, and
+function name all on separate lines. The function parameters may span multiple
+lines if necessary.
+
+\begin{lstlisting}
+template<class MPTraits>
+ReturnType
+ClassName<MPTraits>::
+FunctionName(parameter list which may span multiple lines) {
+}
+\end{lstlisting}
+
+\subsection{Overriding Functions}
+
+All overriding functions must be declared \texttt{virtual} and
+\texttt{override}. This clarifies that the function does override some base
+implementation and allows the compiler to throw an error if we inadvertently
+fail to match the base function's prototype.
+
+\subsection{MPBaseObject inherited variables/functions}
+
+\subsubsection{m\_debug}
+
+There will be a variable, m\_debug in the PMPL base class which will be used to
+determine when output occurs, e.g., in debugging statements. This means that
+there will be no \#Define statements for debug output. All debug output will be
+of the form:
+
+\begin{lstlisting}
+if(m_debug)
+  cout << ``My debug statement'';
+\end{lstlisting}
+
+\subsubsection{GetNameAndLabel()}
+
+This function returns a unique identifier to this class based on XML input.
+Returns m\_name + ``::'' + m\_label. This should be used in output and record
+keeping.
+
+\begin{lstlisting}
+string callee = this->GetNameAndLabel();
+\end{lstlisting}
+
+\subsubsection{Print}
+
+In all classes one function Print should be implemented which displays the
+values of the class variables at the time of calling. This is called for every
+loaded variable after parsing the XML in the main function of PMPL.
+
+\begin{lstlisting}
+void Print(ostream& _os) const {
+  _os << GetNameAndLabel() << endl;
+  //output rest of class values
+}
+\end{lstlisting}
+
+\subsubsection{XML Parsing}
+
+All derived classes from MPBaseObject may support constructors that take an
+\texttt{XMLNode} parameter. In all such cases, the \texttt{XMLNode} parameter
+must be passed up the class hierarchy so that parent classes get an opportunity
+to parse their parameters.
+
+\subsection{Throwing Errors}
+
+All errors, unless otherwise approved should be thrown using a PMPLException, or
+other base type. This is to encourage recovering from errors in sister programs,
+like Vizmo and GroupBehaviors. Exception classes are located within
+\texttt{src/Utilities/PMPLExceptions.h}. Use the WHERE define to give an exact
+location of the error. The PMPLException base is nicely formatted.
+
+\begin{lstlisting}
+throw PMPLException(``MyExceptionType'', WHERE, ``My error message'');
+\end{lstlisting}
+
+Our exceptions also support ostream-like usage to help with printing non-string
+data that support \texttt{operator<<}, such as \texttt{Boundary} objects. This
+example shows a \texttt{RunTimeException} for a boundary object:
+
+\begin{lstlisting}
+Boundary b;
+throw RunTimeException(WHERE) << "Something is wrong with this boundary:\n"
+    << b << std::endl;
+\end{lstlisting}
+
+\subsection{STL and External Libraries}
+
+The STL and External Libraries, e.g, boost and CGAL should be used as much as
+possible, except when there is a good reason not to, e.g., efficiency.
+
+\subsection{Statistics Tracking}
+
+All statistics should be tracked and recorded in the StatClass. There are
+standard map data structures to associate names with statistics, e.g., sampling
+attempts. The name should include the class name and label. There is a separate
+map for each piece of the code and the output of such statistics is standardized
+to aid in automated data collection.
+
+\subsection{Example Class}
+Example class is located in \texttt{ExampleClass.h} within this same folder:
+
+\lstinputlisting{ExampleClass.h}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Documentation Standards
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Documentation}
+All documentation should be done with Doxygen. This style was chosen to make
+documentation very obvious in the code, and to support automatic generation of
+web-viewable docs for PMPL. Note that the blank comment lines shown in these
+templates are required by Doxygen in order to introduce paragraphs.
+
+The Doxygen documentation will be compiled nightly and copied onto
+Nancy's group's intranet page on here:
+
+\url{https://parasol-webdev.cs.tamu.edu/groups/amatogroup/intranet/PMPLDocs}.
+
+\subsection{General Documentation Proceedures}
+
+\begin{enumerate}
+  \item The function operator of a function object (e.g., std::plus) doesn’t
+    need to be documented. The documentation of the class will provide all
+    necessary information.
+  \item Constructors, destructors, and assignment operators don’t have to be
+    documented, unless they do more than simple initialization and cleanup of
+    the data members of the class.
+  \item Template parameters do not need to be documented so long as their name
+    unambiguously describes their semantic meaning. I.e., template parameter
+    names like `FloatingPointType' and `CfgType' are self-documenting in terms
+    of what type is expected.
+\end{enumerate}
+
+\subsection{Class Documentation}
+
+Place this comment block before the class definition. Document user-visible
+defects and restrictions of the class in the optional section provided. Note
+that the top/bottom commenting lines should extend to the 80th character across.
+
+\begin{lstlisting}[mathescape]
+///////////////////////////////////////////////////////////////////////////////
+/// What information does this class abstract?
+///
+/// [details about the purpose of the class, for example:]
+/// [If the class is implemented from a specific paper, cite authors, conference, and year]
+/// [Non-obvious reasons for its place in the inheritance hierarchy, etc.]
+///
+/// [optional details about user-visible defects and restrictions]
+/// $@$bug What is the problem
+/// $@$remarks What test shows the problem?
+/// $@$todo What must be done before the problem can be fixed?
+///
+/// $@$bug another bug
+/// ...
+///
+/// $@$ingroup What group of classes does this belong to?
+///////////////////////////////////////////////////////////////////////////////
+\end{lstlisting}
+
+\subsection{Enumeration Types}
+
+Enums and enum classes should also be documented with a doxygen block like
+classes. This should explain the meaning of the enumeration. The allowed values
+should have names which clearly describe their meaning, and may additionally be
+documented with in-line doxygen comments. For example, this enumeration type
+describes early termination conditions for a single-source shortest path search:
+
+\begin{lstlisting}[mathescape]
+////////////////////////////////////////////////////////////////////////////////
+/// The possible early-termination conditions for an SSSP run.
+////////////////////////////////////////////////////////////////////////////////
+enum class SSSPTermination {
+  Continue,   ///< Proceed as usual.
+  EndBranch,  ///< End the branch at this vertex and do not relax its neighbors.
+  EndSearch   ///< End the entire search process.
+};
+\end{lstlisting}
+
+\subsection{Function Documentation}
+
+Place this comment block before the method definition.
+
+It is not necessary to include self-evident information in the comment blocks.
+In particular, there is no need to put ”default constructor” or ”destructor” in
+the brief description, since that is evident from the name of the method.
+Doxygen comments should not include information on the implementation of the
+method.
+
+\begin{lstlisting}[mathescape]
+/// What does this method do?
+/// $@$param name meaning of this parameter?
+/// $@$param ...
+/// $@$return What is the meaning of the return value?
+///
+/// Optional: if the usage is not obvious, a 'usage' section can be helpful.
+/// $@$usage
+/// $@$code
+/// int i = 0;
+/// MyFunc(i);
+/// $@$endcode
+///
+/// Optional: if this is a non-member function and it belongs to some other semantic group.
+/// $@$ingroup Semantic Group Name
+\end{lstlisting}
+
+For void functions with no parameters the following shorthand can be used (as
+long as it fits nicely on one line):
+\begin{lstlisting}[mathescape]
+void Foo(); ///< My brief description
+\end{lstlisting}
+
+For functions with obvious return values or parameter interpretations (such as
+getters/setters), the \texttt{@param} and \texttt{@return} documentation can be
+omitted. For these types of functions, this usually just repeats what is stated
+in the brief description.
+
+\subsubsection{Member Function Groups}
+
+This is optional, but if you would like to group members in your class together
+based upon common functionality, this is acceptable and encouraged. An example,
+would be grouping constructors, different types of computations, or different
+sections of accessors. If this is desired, the following standard is enforced:
+
+\begin{lstlisting}[mathescape]
+///$@$name My Group Name
+///$@${
+
+void Foo1();
+void Foo2();
+$\ldots$
+void FooN();
+
+///$@$}
+\end{lstlisting}
+
+Also, grouping functions for common documentation is accepted, and is noted like
+this:
+
+\begin{lstlisting}[mathescape]
+///$@${
+/// Common documentation
+
+void Foo1();
+void Foo2();
+
+///$@$}
+\end{lstlisting}
+
+\subsubsection{Overloaded Functions}
+
+For overloaded functions. Put the long/descriptive comment at the most general
+function, then for the others put the following, with the same brief as the
+other overloaded functions and a short description of the differences.
+
+\begin{lstlisting}[mathescape]
+/// The long brief which appears over each overload.
+/// (params go here)
+/// $@$overload
+/// The specific differences for this version of the function.
+\end{lstlisting}
+
+\subsection{Overridden Functions}
+
+Functions which override a base class implementation do not need to be
+documented; Doxygen will use the base class documentation for these.
+
+\subsubsection{Inherited/derived Functions}
+For inherited/derived functions, if the comment block is in the parent class,
+no further documentation is needed (Doxygen uses parent classes comment by
+default). Simply describe the differences/purpose of that function in the class
+comment block. For example, for $\mathtt{TranslateAtS}$ local planner: no
+commenting of the $\mathtt{IsConnected}$ function is necessary simply state the
+description of the algorithm in the class block.
+
+\subsection{Variable Documentation}
+
+All class (member) and public (global) variables should be documented with their
+purpose.
+
+For class variables:
+\begin{lstlisting}
+bool m_myVar; ///< Brief description after the member variable.
+
+/// This variable has a very long description which doesn't fit after the declaration.
+std::vector<double> m_myVarWithLongDescription;
+\end{lstlisting}
+
+For global variables:
+\begin{lstlisting}[mathescape]
+/// Brief description of variable
+/// $@$ingroup Which group does this variable belong (optional)?
+\end{lstlisting}
+
+The best documentation of temporary variables is in how they are named. If
+additional documentation for temporaries is required, this should not use the
+doxygen format (use a regular comment instead).
+
+\subsection{Algorithm Documentation}
+
+Any other documentation is up to the discretion of the programmer, but C++ style
+comments should be used. This should be for commenting algorithms and
+non-obvious code sections.
+
+In general, comments within function implementations should be non-doxygen type
+and should refer to \emph{what} the code is doing rather than \emph{how} it is
+being done. The code itself is the best descriptor of the \emph{how}; comments
+can help other programmers quickly understand the meaning of the code.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Testing Standards
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Testing}
+Currently only nightly compilation testing occurs nightly. This should be
+expanded in the future. However, there should be one up-to-date (working)
+example of each method in the \texttt{Examples/CfgExamples.xml} file.
+
+\end{document}

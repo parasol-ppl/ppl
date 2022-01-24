@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/2D/2d.env"/>
+    <Robot label="boxy" filename="../Envs/2D/boxy.robot"/>
+
+    <Task label="query" robot="boxy">
+      <StartConstraints>
+        <CSpaceConstraint point="-10 -10"/>
+      </StartConstraints>
+
+      <GoalConstraints>
+        <CSpaceConstraint point="10 10"/>
+      </GoalConstraints>
+    </Task>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="cd" method="RAPID"/>
+      <AlwaysTrueValidity label="AlwaysTrue"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="Nearest" dmLabel="euclidean" unconnected="false"
+          k="1"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="cd"/>
+      <UniformRandomSampler label="UniformRandom" vcLabel="AlwaysTrue"/>
+    </Samplers>
+
+    <Extenders>
+      <BasicExtender label="BERO" debug="false" dmLabel="euclidean" vcLabel="cd"
+        maxDist="1" minDist=".001"/>
+    </Extenders>
+
+    <Metrics>
+      <NumNodesMetric label="NumNodes"/>
+    </Metrics>
+
+    <MapEvaluators>
+      <ConditionalEvaluator label="NodesEval" metric_method="NumNodes"
+        value="300" operator=">="/>
+      <QueryMethod label="Query" debug="true"/>
+      <ComposeEvaluator label="BoundedQuery" operator="or">
+        <Evaluator label="NodesEval"/>
+        <Evaluator label="Query"/>
+      </ComposeEvaluator>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <BasicRRTStrategy label="BasicRRT" debug="true"
+        querySampler="UniformRandomFree" samplerLabel="UniformRandom"
+        nfLabel="Nearest" extenderLabel="BERO"
+        growGoals="true">
+        <Evaluator label="BoundedQuery"/>
+      </BasicRRTStrategy>
+
+      <ValidationStrategy label="Test" target="BasicRRT" debug="true">
+        <GoldStandard robot="boxy" type="roadmap"
+          filename="../Outputs/BasicRRT.0.query.map"/>
+        <GoldStandard robot="boxy" type="cfgpath"
+          filename="../Outputs/BasicRRT.0.query.rdmp.path"/>
+      </ValidationStrategy>
+    </MPStrategies>
+
+    <Solver mpStrategyLabel="Test" seed="0"
+        baseFilename="../Scratch/BasicRRT"/>
+
+  </Library>
+</MotionPlanning>

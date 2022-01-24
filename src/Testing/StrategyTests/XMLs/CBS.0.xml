@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+
+  <!-- Here we specify input files, such as environment and query. The
+       'baseFilename in the Problem node is for Simulator stat output only. -->
+  <Problem baseFilename="MultiRobotExample">
+
+    <Environment filename="../Envs/3D/mr-3d.xml"/>
+
+    <Robot  label="boxy-0" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+	  <Robot  label="boxy-1" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+	  <Robot  label="boxy-2" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+	  <Robot  label="boxy-3" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+	  <Robot  label="boxy-4" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+	  <Robot  label="boxy-5" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+	  <Robot  label="boxy-6" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+	  <Robot  label="boxy-7" filename="../Envs/3D/iCreate.xml">
+      <Agent type="child" waypointDm="euclidean" waypointThreshold=".05" debug="true"/>
+	  </Robot>
+
+    <!-- The robotLabels parameter lists all of the robots included in this group -->
+	  <RobotGroup label="robotGroup" robotLabels="
+		  boxy-0 boxy-1 boxy-2 boxy-3 boxy-4
+	    boxy-5 boxy-6 boxy-7 "/>
+
+
+    <!-- This GroupTask is just used to specify the start configuration for robots in the group -->
+	  <!--GroupTask label="groupQuery" group="robotGroup">
+    	<Task label="query-0" robot="boxy-0">
+	    	<StartConstraints>
+    			<CSpaceConstraint point="-4.170000 2.503333 0.000000"/>
+        </StartConstraints>
+ 	    </Task>
+ 	    <Task label="query-1" robot="boxy-1">
+		    <StartConstraints>
+ 			    <CSpaceConstraint point="-4.170000 0.836667 0.000000"/>
+	     </StartConstraints>
+      </Task>
+      <Task label="query-2" robot="boxy-2">
+        <StartConstraints>
+          <CSpaceConstraint point="-4.170000 -0.830000 0.000000"/>
+        </StartConstraints>
+      </Task>
+      <Task label="query-3" robot="boxy-3">
+        <StartConstraints>
+          <CSpaceConstraint point="-4.170000 -2.496667 0.000000"/>
+        </StartConstraints>
+      </Task>
+      <Task label="query-4" robot="boxy-4">
+        <StartConstraints>
+          <CSpaceConstraint point="-2.503333 -4.170000 0.000000"/>
+        </StartConstraints>
+      </Task>
+      <Task label="query-5" robot="boxy-5">
+        <StartConstraints>
+          <CSpaceConstraint point="-0.836667 -4.170000 0.000000"/>
+        </StartConstraints>
+      </Task>
+      <Task label="query-6" robot="boxy-6">
+        <StartConstraints>
+          <CSpaceConstraint point="0.830000 -4.170000 0.000000"/>
+        </StartConstraints>
+      </Task>
+      <Task label="query-7" robot="boxy-7">
+        <StartConstraints>
+          <CSpaceConstraint point="2.496667 -4.170000 0.000000"/>
+        </StartConstraints>
+      </Task>
+    </GroupTask-->
+
+    <!--Task label="coordinatorTask" robot="coordinator">
+      <StartConstraints>
+        <CSpaceConstraint point="0 0 0 0 0 0"/>
+      </StartConstraints>
+    </Task-->
+
+    <GroupTask label="groupQuery" group="robotGroup">
+      <Task label="query-0" robot="boxy-0">
+        <StartConstraints>
+          <CSpaceConstraint point="-4.170000 2.503333 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="4.170000 2.503333 0.000000"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-1" robot="boxy-1">
+        <StartConstraints>
+          <CSpaceConstraint point="-4.170000 0.836667 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="4.170000 0.836667 0.000000"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-2" robot="boxy-2">
+        <StartConstraints>
+          <CSpaceConstraint point="-4.170000 -0.830000 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="4.170000 -0.830000 0.000000"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-3" robot="boxy-3">
+        <StartConstraints>
+          <CSpaceConstraint point="-4.170000 -2.496667 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="4.170000 -2.496667 0.000000"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-4" robot="boxy-4">
+        <StartConstraints>
+          <CSpaceConstraint point="-2.503333 -4.170000 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="-2.503333 4.170000 0.000000"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-5" robot="boxy-5">
+        <StartConstraints>
+          <CSpaceConstraint point="-0.836667 -4.170000 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="-0.836667 4.170000 0.000000"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-6" robot="boxy-6">
+        <StartConstraints>
+          <CSpaceConstraint point="0.830000 -4.170000 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="0.830000 4.170000 0.000000"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-7" robot="boxy-7">
+        <StartConstraints>
+          <CSpaceConstraint point="2.496667 -4.170000 0.000000"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="2.496667 4.170000 0.000000"/>
+        </GoalConstraints>
+      </Task>
+    </GroupTask>
+
+  </Problem>
+
+  <!-- Set available algorithms and parameters. -->
+  <Library>
+
+    <DistanceMetrics>
+      <Minkowski label="minkowski" r1="3.0" r2="3.0" r3="0.333"
+        normalize="false"/>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <AlwaysTrueValidity label="alwaysTrue"/>
+      <CollisionDetection label="rapid" method="RAPID"/>
+      <CollisionDetection label="pqp" method="PQP"/>
+      <CollisionDetection label="pqp_solid" method="PQP_SOLID"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="Nearest" dmLabel="minkowski" unconnected="false"
+        k="1"/>
+      <BruteForceNF label="BFNF" dmLabel="euclidean" unconnected="false" k="6"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandom" vcLabel="alwaysTrue"/>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="pqp_solid"/>
+    </Samplers>
+
+    <LocalPlanners>
+      <StraightLine label="sl" binaryEvaluation="false" vcLabel="pqp_solid"
+        saveIntermediates="true"/>
+    </LocalPlanners>
+
+    <Extenders>
+      <BasicExtender label="BERO" debug="false" dmLabel="minkowski"
+        vcLabel="alwaysTrue" maxDist="4." minDist=".01"/>
+    </Extenders>
+
+    <PathModifiers>
+    </PathModifiers>
+
+    <Connectors>
+      <NeighborhoodConnector label="Closest" nfLabel="BFNF" lpLabel="sl"
+        checkIfSameCC="false" debug="false"/>
+    </Connectors>
+
+    <MapEvaluators>
+      <TimeEvaluator label="TimeEval" timeout="1000"/>
+      <QueryMethod label="IndividualQuery" debug="false"
+        safeIntervalToolLabel="SI"/>
+      <ComposeEvaluator label="BoundedIndividualQuery" operator="or">
+        <Evaluator label="TimeEval"/>
+        <Evaluator label="IndividualQuery"/>
+      </ComposeEvaluator>
+
+      <CBSQuery label="CBSQuery" queryLabel="IndividualQuery"
+        debug="true" vcLabel="pqp_solid"/>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <BasicPRM label="IndividualPRM">
+        <Sampler label="UniformRandomFree" number="10" attempts="5"/>
+        <Connector label="Closest"/>
+        <Evaluator label="BoundedIndividualQuery"/>
+      </BasicPRM>
+
+      <GroupDecoupledStrategy label="CBSPRM" strategyLabel="IndividualPRM">
+        <Evaluator label="CBSQuery"/>
+      </GroupDecoupledStrategy>
+
+      <ValidationStrategy label="Test" target="CBSPRM" debug="true">
+        <GoldStandard robot="boxy-0" type="roadmap"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-0.map"/>
+        <GoldStandard robot="boxy-0" type="cfgpath"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-0.rdmp.path"/>
+
+        <GoldStandard robot="boxy-1" type="roadmap"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-1.map"/>
+        <GoldStandard robot="boxy-1" type="cfgpath"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-1.rdmp.path"/>
+
+        <GoldStandard robot="boxy-2" type="roadmap"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-2.map"/>
+        <GoldStandard robot="boxy-2" type="cfgpath"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-2.rdmp.path"/>
+
+        <GoldStandard robot="boxy-3" type="roadmap"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-3.map"/>
+        <GoldStandard robot="boxy-3" type="cfgpath"
+          filename="../Outputs/CBS.0.12345678.groupQuery.boxy-3.rdmp.path"/>
+      </ValidationStrategy>
+    </MPStrategies>
+
+    <MPTools>
+      <SafeIntervalTool label="SI" vcLabel="pqp_solid" debug="true"/>
+    </MPTools>
+
+    <!-- The seed can be changed to generate different roadmaps and paths -->
+    <!--Solver mpStrategyLabel="CBSPRM" seed="12345678"
+      baseFilename="../Outputs/CBS.0" vizmoDebug="true"/-->
+
+    <Solver mpStrategyLabel="Test" seed="12345678"
+      baseFilename="../Scratch/CBS.0"/>
+
+  </Library>
+</MotionPlanning>

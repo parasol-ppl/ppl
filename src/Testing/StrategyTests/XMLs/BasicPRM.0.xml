@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/2D/2d.env"/>
+    <Robot label="boxy" filename="../Envs/2D/boxy.robot"/>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="cd" method="RAPID"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="BFNF" dmLabel="euclidean" unconnected="false" k="5"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="cd" debug="true"/>
+    </Samplers>
+
+    <LocalPlanners>
+      <StraightLine label="sl" binaryEvaluation="true" vcLabel="cd"/>
+    </LocalPlanners>
+
+    <Connectors>
+      <CCsConnector label="CCs" debug="true"
+        nfLabel="BFNF" lpLabel="sl" checkIfSameCC="false"/>
+    </Connectors>
+
+    <Metrics>
+      <NumNodesMetric label="NumNodes"/>
+    </Metrics>
+
+    <MapEvaluators>
+      <ConditionalEvaluator label="NodesEval" metric_method="NumNodes"
+        value="100" operator=">="/>
+    </MapEvaluators>
+
+    <MPStrategies>
+
+      <!-- Basic PRM where num samples is based on Number -->
+      <BasicPRM label="BasicPRM" debug="true">
+        <Sampler label="UniformRandomFree" number="1" attempts="1"/>
+        <Connector label="CCs"/>
+        <Evaluator label="NodesEval"/>
+      </BasicPRM>
+
+      <ValidationStrategy label="Test" target="BasicPRM" debug="true">
+        <GoldStandard robot="boxy" type="roadmap"
+          filename="../Outputs/BasicPRM.0.map"/>
+      </ValidationStrategy>
+
+    </MPStrategies>
+
+    <Solver mpStrategyLabel="Test" seed="0"
+      baseFilename="../Scratch/BasicPRM"/>
+
+  </Library>
+</MotionPlanning>

@@ -1,0 +1,31 @@
+//******************************************************************************
+// This section is the main page of the HTML and the first chapter in LaTeX.
+//******************************************************************************
+
+/**
+ * \mainpage Overview
+ *
+ * \section overview Overview
+ * PMPL, the Parasol Motion Planning Library, is a C++ library with
+ * functionality to solve motion planning problems for robotics and related
+ * applications.
+ *
+ * PMPL implements algorithms mainly used for sampling-based motion planning but
+ * can be used to implement the base of other motion planning paradigms.
+ *
+ * PMPL provides algorithm abstractions of sampling-based planning components.
+ *
+ * - \ref Core - The Motion Planning Universe (MPProblem and MPTraits),
+ *   the Workspace (Environment), Configurations and @cspace (Cfg), Simple Paths
+ *   (DefaultWeight), the Roadmap, and Utilities
+ *
+ * - \ref AlgorithmAbstractions - Algorithmic abstractions used in motion
+ *   planning methods, e.g., Distance Metrics, Local Planners, etc
+ *
+ * - \ref ParallelMethods - Parallel components of PMPL
+ * - \ref DeadCode - Code not supported by PMPL (for now).
+ *
+ * A reasonable understanding of Configuration Space, vector math, and C++ and
+ * the STL will greatly ease the learning curve for PMPL.
+ *
+ **/

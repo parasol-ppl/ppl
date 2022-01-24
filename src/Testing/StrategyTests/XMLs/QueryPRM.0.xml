@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/2D/2d.env"/>
+    <Robot label="boxy" filename="../Envs/2D/boxy.robot"/>
+
+    <Task label="query" robot="boxy">
+      <StartConstraints>
+        <CSpaceConstraint point="-10 -10"/>
+      </StartConstraints>
+
+      <GoalConstraints>
+        <CSpaceConstraint point="10 10"/>
+      </GoalConstraints>
+    </Task>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="pqp_solid" method="PQP_SOLID"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="BFNF" dmLabel="euclidean" unconnected="false" k="10"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="pqp_solid"/>
+    </Samplers>
+
+    <LocalPlanners>
+      <StraightLine label="sl" binaryEvaluation="true" vcLabel="pqp_solid"/>
+    </LocalPlanners>
+
+    <Connectors>
+      <NeighborhoodConnector label="Closest" nfLabel="BFNF" lpLabel="sl"
+        checkIfSameCC="false" debug="false"/>
+    </Connectors>
+
+    <MapEvaluators>
+      <QueryMethod label="Query" debug="false"/>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <BasicPRM label="QueryPRM" debug="true">
+        <Sampler label="UniformRandomFree" number="1" attempts="1"/>
+        <Connector label="Closest"/>
+        <Evaluator label="Query"/>
+      </BasicPRM>
+
+      <ValidationStrategy label="Test" target="QueryPRM" debug="true">
+        <GoldStandard robot="boxy" type="roadmap"
+          filename="../Outputs/QueryPRM.0.query.map"/>
+        <GoldStandard robot="boxy" type="cfgpath"
+          filename="../Outputs/QueryPRM.0.query.rdmp.path"/>
+      </ValidationStrategy>
+    </MPStrategies>
+
+    <Solver mpStrategyLabel="Test" seed="0"
+      baseFilename="../Scratch/QueryPRM"/>
+
+  </Library>
+</MotionPlanning>

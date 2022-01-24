@@ -1,0 +1,66 @@
+\documentclass[12pt]{article}
+%\usepackage[top=0.5in,left=0.5in,right=0.5in, bottom=0.5in]{geometry}
+\usepackage[margin=1.00in]{geometry}
+\usepackage{amssymb}
+\usepackage{algorithm,algorithmic}
+\newcommand{\EXCISE}[1]{}
+
+\title{\Large \bf User Guide for Parallel Sampling-Based Motion Planning}
+\author{Sam Ade Jacobs}
+
+\begin{document}
+\maketitle
+
+This user guide outlines the necessary steps require to compile and run parallel code.
+It is a living document and expected to be modified as we make progress with parallel motion planning
+research. The primary objective is to streamline the compilation and execution process for users.
+A separate file (to be called developer's guide) will outline what developers need to do to write a
+STAPL-based parallel SBMP code.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% COMPILATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{COMPILATION}
+The parallel code heavily depends on STAPL framework for many of its components and STAPL also depends on
+Boost and C++ STL. For this reason users need to have both BOOST and STL set up. Since STAPL is usually
+ahead of PMPL in terms of compiler, STL and BOOST, it is important that the user have most recent versions of
+these libraries and C++ compiler ( with OpenMPI/MPI wrapper). Here are the outlines of steps involved:
+\begin{enumerate}
+\item Run on the appropriate machine.  If you are developing for initial testing, then use any of Parasol Lab quad-core 64-bits machines (i.e. columbo, agate, newdelhi etc)
+\item Load the appropriate compilers and libraries by using the module system as necessary.  Run {\tt module avail} to check available modules.
+  \begin{itemize}
+    \item {\tt load module gcc-4.6.2}
+    \item {\tt load module boost-1.48}
+    \item {\tt load module openmpi-x86\_64}
+  \end{itemize}
+\item Compile STAPL first with appropriate platform and STL specified
+  \begin{itemize}
+    \item {\tt cd utils/stapl\_release}
+    \item {\tt gmake platform=LINUX\_gcc stl=4.6.2}
+    \item {\tt cd ../../}
+  \end{itemize}
+\item Compile PMPL with parallel=1 and the appropriate STL LIB. This can either be set in the Makefile or done on the commandline:
+  \begin{itemize}
+    \item {\tt cd src}
+    \item {\tt gmake platform=LINUX\_64\_gcc parallel=1 STL\_LIB=4.6.2 pmpl}
+  \end{itemize}
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% EXECUTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{EXECUTION}
+Having successfully compiled the code, the next step is to run:
+\begin{enumerate}
+\item Change to the environment directory you wish to run: {\tt cd TestRigid}
+\item Adjust parameters in the xml input file (e.g., {\tt TestRigid/ParallelPMPLExample.xml})  (Note:this will file will be merged with PMPLExamples.xml soon)
+\item Run via mpirun, specifing the number of processors p: {\tt mpirun -np p ../pmpl -f ParallelPMPLExample.xml}
+\end{enumerate}
+NOTE: Provided you compile in debug mode, totalview is a great debugger for parallel code, detail on how
+to use this will be provided in developer's guide.
+
+\end{document}

@@ -1,0 +1,210 @@
+// The following is the algorithm abstractions of PMPL, along with the detailed
+// descriptions and subsections. All subsections should appear in the desired
+// order of appearance, and are defined by @defgroup. Source code that belongs
+// in a section or subsection should indicate as such with @addtogroup.
+
+////////////////////////////////////////////////////////////////////////////////
+/// @defgroup AlgorithmAbstractions Algorithm Abstractions
+/// The algorithm abstractions in PMPL are:
+/// - \ref DistanceMetrics - Compute distances between two configurations
+/// - \ref ValidityCheckers - Determine if a configuration is in @cfree or
+///        @cobst
+/// - \ref Samplers - Generate configurations in @cspace (usually @cfree)
+/// - \ref NeighborhoodFinders - Determine nearest neighbors within a roadmap
+/// - \ref LocalPlanners - Validate simple, often deterministic paths, between
+///        configurations
+/// - \ref Extenders - Step configurations toward a direction until an end
+///        condition is met, e.g., a distance \f$\Delta q\f$ is reached
+/// - \ref Connectors - Generate edges of a roadmap, usually a combination of a
+///        neighborhood finder and a local planner
+/// - \ref Metrics - Determine a value/property from a roadmap
+/// - \ref MapEvaluators - Determine is a roadmap passes an evaluation test,
+///        e.g., can solve an example query
+/// - \ref PathModifiers - Smooth/modify an input path to produce a new valid
+///        path.
+/// - \ref RegionDecomposition - Region framework to split space for divide and
+///        conquer methods
+/// - \ref MotionPlanningStrategies - Loosely, construct a roadmap, but more
+///        generally are anything executable by PMPL, e.g., solve this problem
+///        or smooth this path
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup DistanceMetrics Distance Metrics
+/// @brief Distance Metrics (@dm) compute distances between two configurations.
+///
+/// A Distance Metric (@dm) computes a meaningful value representing the
+/// feasibility of transitioning between two configurations \f$c_1\f$ and
+/// \f$c_2\f$. A @dm \f$\delta(c_1, c_2)\f$ should be non-negative, and it
+/// should be zero when \f$c_1 \equiv c_2\f$.
+/// The base method can be found in DistanceMetricMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup ValidityCheckers Validity Checkers
+/// @brief Validity Checkers (@vc) determine if a configuration is in @cfree or
+/// @cobst.
+///
+/// A Validity Checker (@vc) is defined as a black box unit which returns
+/// whether or not a configuration is within @cfree or @cobst. This is most
+/// commonly defined as collision detection, but could be more widely seen as
+/// anything which defines @cobst, e.g., energy-feasible.
+/// The base method can be found in ValidityCheckerMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup ValidityCheckers
+/// @defgroup CollisionDetection Collision Detection
+/// @brief Collision Detection (@cd) determines if a robot placed at a certain
+/// configuration is in collision with workspace obstacles.
+///
+/// Collision Detection (@cd) is an important compontent of a robotics library.
+/// It takes an input configuration and returns whether or not the robot
+/// configured there is in collision with anyworkspace obstacles. Mostly these
+/// serve as middleware to interface with the external libraries.
+/// The base method can be found in CollisionDetectionMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup Samplers Samplers
+/// @brief Samplers (@samp) generate configurations in @cspace (usually @cfree).
+///
+/// A Sampler (@samp) is defined as an algorithm which generates configurations
+/// @cspace, however this is typically restricted to @cfree. They either take in
+/// a number of desired samples or a set of input configurations to apply the
+/// algorithm to.
+/// The base method can be found in SamplerMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup NeighborhoodFinders Neighborhood Finders
+/// @brief Neighborhood Finders (@nf) determine nearest neighbors within a
+/// roadmap.
+///
+/// A Neighborhood Finders (@nf) is a key component to most sampling-based motion
+/// planning algorithms. Essentially, given an input configuration they return a
+/// set of "nearby" configurations. This can be done in an approximate fashion
+/// or with an exact computation. These are used in @rrts to find the nearest
+/// node, and by @prms to determine a set of candidate edges for validation.
+/// The base method can be found in NeighborhoodFinderMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup NeighborhoodFinders
+/// @ingroup Utilities
+/// @defgroup NeighborhoodFinderUtils Neighborhood Finder Utilities
+/// @brief External data structures to help neighborhood finding algorithms.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup LocalPlanners Local Planners
+/// @brief Local Plannners (@lp) validate simple, often deterministic paths,
+/// between configurations.
+///
+/// A Local Planner (\lp) is basically a validity checker for simple paths
+/// between two configurations. These planners are typically efficient,
+/// deterministic, and incomplete. They are often used to validate edges of our
+/// roadmaps. Paths are defined as polygonal chains
+/// \f$P = \{q_1, q_2, \ldots q_n\}\f$ through @cspace.
+/// The base method can be found in LocalPlannerMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup Extenders Extenders
+/// @brief Extenders (@exte) step configurations toward a direction until an end
+/// condition is met, e.g., a distance \f$\Delta q\f$ is reached.
+///
+/// An Extender (@exte) is used to create a new configuration \f$q_{new}\f$ in a
+/// direction towards \f$q_{dir}\f$ from a starting configuration \f$q\f$. This
+/// is commonly used for single-query planners such as @rrt.
+/// The base method can be found in ExtenderMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup Connectors Connectors
+/// @brief Connectors (@conn) generate edges of a roadmap, usually a combination
+/// of a neighborhood finder and a local planner.
+///
+/// A Connector (@conn) orchestrates the creation of edges within a
+/// sampling-based planner. More loosely, it combines a neighbor selection
+/// phase, to determine candidate edges, and a local planning phase to validate
+/// them. If a local planner succeeds then the edge is added to the roadmap.
+/// These algorithms vary in the ways they do this.
+/// The base method can be found in ConnectorMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup Metrics Metrics
+/// @brief Metrics (@metr) determine a value/property from a roadmap.
+///
+/// A Metric (@metr) computes some value over the roadmap, e.g., coverage,
+/// connectivity, number of nodes, number of edges, etc.
+/// The base method can be found in MetricMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup MapEvaluators Map Evaluators
+/// @brief Map Evaluators (@me) determine if a roadmap passes an evaluation
+/// test, e.g., can solve an example query.
+///
+/// A Map Evaluator (@me) determines when roadmap construction is finished.
+/// Essentially they process the roadmap to see if some boolean condition is
+/// met, such as being able to solve a query or having certain properties, etc.
+/// The base method can be found in MapEvaluatorMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup PathModifiers Path Modifiers
+/// @brief Path Modifiers (@pam) smooth/modify an input path to produce a new
+/// valid path.
+///
+/// A Path Modifier (@pam) take an input path, or a series of configurations a
+/// resolution distance part, and attempt to make that path better. This might
+/// involve cutting out back tracking motions, applying local optimization
+/// techniques, or pushing the path to the medial axis.
+/// The base method can be found in PathModifierMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup RegionDecomposition Region Decomposition
+/// @brief Region framework to split space for divide and conquer methods
+///
+/// Region decomposition involves splitting the space for use in divide and
+/// conquer strategies. This group contains all classes which support regions
+/// and algorithms for decomposing them.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup AlgorithmAbstractions
+/// @defgroup MotionPlanningStrategies Motion Planning Strategies
+/// @brief Motion Planning Strategies (@mps) loosely, construct a roadmap, but
+/// more generally are anything executable by PMPL, e.g., solve this problem or
+/// smooth this path.
+///
+/// A Motion Planning Strategy (\mps) essentially orchestrates the creation of
+/// a roadmap for use to solve motion planning problems. They are the "solvers"
+/// or the algorithms used to solve a problem, e.g., @prm or @rrt. They are not
+/// restricted to solving motion planning problems, but could be as simple as
+/// load a previously constructed roadmap and evaluate it, etc. These are
+/// "executed" by PMPL.
+/// The base method can be found in MPStrategyMethod.h.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup MotionPlanningStrategies
+/// @ingroup Utilities
+/// @defgroup MotionPlanningStrategyUtils Motion Planning Stategy Utilities
+/// @brief External data structures to help neighborhood finding algorithms.
+////////////////////////////////////////////////////////////////////////////////
+

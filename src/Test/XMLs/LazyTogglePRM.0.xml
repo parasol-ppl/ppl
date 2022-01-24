@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/2D/2d.env"/>
+    <Robot label="boxy" filename="../Envs/2D/boxy.robot"/>
+
+    <Task label="query" robot="boxy">
+      <StartConstraints>
+        <CSpaceConstraint point="-10 -10"/>
+      </StartConstraints>
+
+      <GoalConstraints>
+        <CSpaceConstraint point="10 10"/>
+      </GoalConstraints>
+    </Task>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="pqp_solid" method="PQP_SOLID"/>
+      <AlwaysTrueValidity label="alwaysTrue"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="BFNF" dmLabel="euclidean" unconnected="false" k="10"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandom" vcLabel="alwaysTrue"/>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="pqp_solid"/>
+    </Samplers>
+
+    <LocalPlanners>
+      <StraightLine label="sl" binaryEvaluation="true" vcLabel="pqp_solid"/>
+      <StraightLine label="slAlwaysTrue" binaryEvaluation="true"
+        vcLabel="alwaysTrue"/>
+    </LocalPlanners>
+
+    <Connectors>
+      <NeighborhoodConnector label="ClosestAlwaysTrue" nfLabel="BFNF"
+        lpLabel="slAlwaysTrue" checkIfSameCC="false"/>
+      <NeighborhoodConnector label="ToggleConnect" nfLabel="BFNF"
+        lpLabel="sl" maxFailures="1" checkIfSameCC="false"/>
+    </Connectors>
+
+    <MapEvaluators>
+      <LazyToggleQuery label="LazyToggleQuery"
+        vcLabel="pqp_solid" lpLabel="sl" dmLabel="euclidean"
+        deleteInvalid="true" iterative="true">
+        <NodeConnectionMethod label="ClosestAlwaysTrue"/>
+        <ToggleConnectionMethod label="ToggleConnect"/>
+        <Resolution mult="27"/>
+        <Resolution mult="16"/>
+        <Resolution mult="1"/>
+      </LazyToggleQuery>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <TogglePRMStrategy label="LazyTogglePRM" priority="true"
+        vcLabel="pqp_solid">
+        <Sampler label="UniformRandom" number="10" attempts="1"/>
+        <Connector label="ClosestAlwaysTrue"/>
+        <ColConnector label="ToggleConnect"/>
+        <Evaluator label="LazyToggleQuery"/>
+      </TogglePRMStrategy>
+
+      <ValidationStrategy label="Test" target="LazyTogglePRM" debug="true">
+        <GoldStandard robot="boxy" type="roadmap"
+          filename="../Outputs/LazyTogglePRM.0.query.map"/>
+        <GoldStandard robot="boxy" type="blockroadmap"
+          filename="../Outputs/LazyTogglePRM.0.query.block.map"/>
+        <GoldStandard robot="boxy" type="cfgpath"
+          filename="../Outputs/LazyTogglePRM.0.query.rdmp.path"/>
+      </ValidationStrategy>
+    </MPStrategies>
+
+    <Solver mpStrategyLabel="Test" seed="0"
+      baseFilename="../Scratch/LazyTogglePRM"/>
+
+  </Library>
+</MotionPlanning>

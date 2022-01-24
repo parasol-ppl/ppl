@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/3D/3d.env"/>
+    <Robot label="boxy" filename="../Envs/3D/boxy.robot"/>
+
+    <Task label="query" robot="boxy">
+      <StartConstraints>
+        <CSpaceConstraint point="0 0 0 0 0 0"/>
+      </StartConstraints>
+
+      <GoalConstraints>
+        <CSpaceConstraint point="20 5 10 0.2 0.8 0.5"/>
+      </GoalConstraints>
+    </Task>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="rapid" method="RAPID"/>
+      <CollisionDetection label="pqp_solid" method="PQP_SOLID"/>
+      <AlwaysTrueValidity label="alwaysTrue"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="Nearest"
+        dmLabel="euclidean" unconnected="false" k="1"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandom" vcLabel="alwaysTrue"/>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="rapid"/>
+    </Samplers>
+
+    <Extenders>
+      <BasicExtender label="BERO"
+        dmLabel="euclidean" vcLabel="rapid" maxDist="10." minDist=".01"
+        debug="true"/>
+    </Extenders>
+
+    <MapEvaluators>
+      <RRTQuery label="RRTQuery"
+        nfLabel="Nearest" exLabel="BERO" fullRecreatePath="false" debug="true"/>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <Syclop label="Syclop"
+        numRoots="1" m="1" growthFocus="0.01" dmLabel="euclidean"
+        nfLabel="Nearest" vcLabel="rapid" gtype="UNDIRECTED_TREE" debug="true"
+        extenderLabel="BERO">
+        <Evaluator label="RRTQuery"/>
+      </Syclop>
+    </MPStrategies>
+
+    <Solver mpStrategyLabel="Syclop" seed="0" baseFilename="../Scratch/Syclop"/>
+
+  </Library>
+
+</MotionPlanning>

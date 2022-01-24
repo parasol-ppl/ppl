@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+
+  <!-- Here we specify input files, such as environment and query. -->
+  <Problem>
+    <Environment filename="../Envs/3D/3d.xml"/>
+
+    <Robot label="boxy-0" filename="../Envs/3D/boxy.robot"/>
+    <Robot label="boxy-1" filename="../Envs/3D/boxy.robot"/>
+    <Robot label="boxy-2" filename="../Envs/3D/boxy.robot"/>
+    <Robot label="boxy-3" filename="../Envs/3D/boxy.robot"/>
+
+    <RobotGroup label="robotGroup" robotLabels="boxy-0 boxy-1 boxy-2 boxy-3"/>
+
+    <GroupTask label="groupQuery" group="robotGroup">
+      <Task label="query-0" robot="boxy-0">
+        <StartConstraints>
+          <CSpaceConstraint point="-8 0 0  0 0 0"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point=" 8 0 0  0 0 0"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-1" robot="boxy-1">
+        <StartConstraints>
+          <CSpaceConstraint point=" 8 0 0  0 0 0"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="-8 0 0  0 0 0"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-2" robot="boxy-2">
+        <StartConstraints>
+          <CSpaceConstraint point="0 -8 0  0 0 0"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="0  8 0  0 0 0"/>
+        </GoalConstraints>
+      </Task>
+      <Task label="query-3" robot="boxy-3">
+        <StartConstraints>
+          <CSpaceConstraint point="0  8 0  0 0 0"/>
+        </StartConstraints>
+        <GoalConstraints>
+          <CSpaceConstraint point="0 -8 0  0 0 0"/>
+        </GoalConstraints>
+      </Task>
+    </GroupTask>
+  </Problem>
+
+  <!-- Set available algorithms and parameters. -->
+  <Library>
+
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="pqp_solid" method="PQP_SOLID"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="BFNF"
+        dmLabel="euclidean" unconnected="false" k="5"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandomFree"
+        vcLabel="pqp_solid"/>
+    </Samplers>
+
+    <LocalPlanners>
+      <StraightLine label="sl"
+        vcLabel="pqp_solid"
+        binaryEvaluation="false" saveIntermediates="true"/>
+    </LocalPlanners>
+
+    <Connectors>
+      <NeighborhoodConnector label="Closest"
+        nfLabel="BFNF" lpLabel="sl"
+        checkIfSameCC="false"/>
+    </Connectors>
+
+    <MapEvaluators>
+      <QueryMethod label="IndividualQuery" debug="false"
+        safeIntervalToolLabel="SI"/>
+      <GroupQuery label="CompositeQuery"/>
+      <GroupDecoupledQuery label="DecoupledQuery" debug="false"
+        queryLabel="IndividualQuery"/>
+      <GroupCBSQuery label="CBSQuery" debug="true"
+        queryLabel="IndividualQuery" vcLabel="pqp_solid" nodeLimit="64"/>
+    </MapEvaluators>
+
+
+    <MPStrategies>
+      <BasicPRM label="IndividualPRM">
+        <Sampler label="UniformRandomFree" number="10" attempts="5"/>
+        <Connector label="Closest"/>
+        <Evaluator label="IndividualQuery"/>
+      </BasicPRM>
+
+      <GroupDecoupledStrategy label="CBSPRM" debug="true"
+        strategyLabel="IndividualPRM">
+        <Evaluator label="CBSQuery"/>
+      </GroupDecoupledStrategy>
+
+      <ValidationStrategy label="Test" target="CBSPRM" debug="true">
+        <GoldStandard robot="boxy-0" type="roadmap"
+          filename="../Outputs/CBS.0.groupQuery.boxy-0.map"/>
+        <GoldStandard robot="boxy-0" type="cfgpath"
+          filename="../Outputs/CBS.0.groupQuery.boxy-0.rdmp.path"/>
+
+        <GoldStandard robot="boxy-1" type="roadmap"
+          filename="../Outputs/CBS.0.groupQuery.boxy-1.map"/>
+        <GoldStandard robot="boxy-1" type="cfgpath"
+          filename="../Outputs/CBS.0.groupQuery.boxy-1.rdmp.path"/>
+
+        <GoldStandard robot="boxy-2" type="roadmap"
+          filename="../Outputs/CBS.0.groupQuery.boxy-2.map"/>
+        <GoldStandard robot="boxy-2" type="cfgpath"
+          filename="../Outputs/CBS.0.groupQuery.boxy-2.rdmp.path"/>
+
+        <GoldStandard robot="boxy-3" type="roadmap"
+          filename="../Outputs/CBS.0.groupQuery.boxy-3.map"/>
+        <GoldStandard robot="boxy-3" type="cfgpath"
+          filename="../Outputs/CBS.0.groupQuery.boxy-3.rdmp.path"/>
+      </ValidationStrategy>
+    </MPStrategies>
+
+    <MPTools>
+      <SafeIntervalTool label="SI" vcLabel="pqp_solid"/>
+    </MPTools>
+
+    <Solver mpStrategyLabel="Test" seed="0"
+      baseFilename="../Scratch/CBS"/>
+
+  </Library>
+</MotionPlanning>

@@ -1,0 +1,145 @@
+// The following is the core components of PMPL, along with the detailed
+// descriptions and subsections. All subsections should appear in the desired
+// order of appearance, and are defined by @defgroup. Source code that belongs
+// in a section or subsection should indicate as such with @addtogroup.
+
+////////////////////////////////////////////////////////////////////////////////
+/// @defgroup Core Core
+/// The core components of PMPL shared by all its algorithmic abstractions are:
+/// - \ref MotionPlanningUniverse - MPProblem and MPTraits
+/// - \ref Environment - The workspace of the motion planning problem
+/// - \ref Cfgs - Configurations and @cspace
+/// - \ref Weights - Simple paths and edges of the roadmap
+/// - \ref Roadmap - The roadmap used by sampling-based planning algorithms
+/// - \ref Utilities - Utility classes and functions
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Core
+/// @defgroup MotionPlanningUniverse Motion Planning Universe
+/// @brief Core access to, storage of, and availability for loading of
+/// everything in PMPL.
+///
+/// The Motion Planning Universe is defined by two main components: the Motion
+/// Planning Problem (defined in MPProblem.h) and the Motion Planning Traits
+/// (defined in MPTraits.h). The Motion Planning Problem is the central access
+/// hub of everything in PMPL. The Motion Planning Traits define what methods
+/// can be used within the scope of that compilation, i.e., loaded or added into
+/// the program.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Core
+/// @defgroup Environment Environment
+/// @brief The workspace of the motion planning problem.
+///
+/// The Environment is essentially the workspace of the motion planning problem.
+/// We define a workspace as a set of MultiBody which are essentially either
+/// robots or obstacle geometries and a Boundary to define the
+/// sampling/exploration region for the planner.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Core
+/// @defgroup Cfgs Configuration Types
+/// @brief Configuration Space (@cspace) Abstraction.
+///
+/// Various configuration types defining the valid operations on @cspace
+/// and points and vectors thereof, e.g., @c operator+ for adding a directional
+/// vector to a point configuration. It is important to remember that @cspace is
+/// d-Dimensional, and points and vectors all behave exactly the same.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Cfgs
+/// @defgroup SurfaceCfgs Surface Configuration Types
+/// @brief Configuration Space on surfaces.
+///
+/// Various configuration types which are bound to surfaces. These are
+/// primarily used by the Group Behaviors code base.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Cfgs
+/// @defgroup ReachableCfgs Reachable Distance/Volume Configuration Types
+/// @brief Reachable Distance/Volumn Space (RD/V-space).
+///
+/// Various configuration types which are related to articulated linkages
+/// and closed chain robotic systems. Reachable Distance is a theoretical
+/// foundation for sampling configurations from Reachable Distance Space
+/// (RD-space). These configuration classes represent this concept.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Cfgs
+/// @ingroup Utilities
+/// @defgroup ReachableUtils Reachable Distance/Volume Utilities
+/// @brief Reachable Distance/Volumn Space (RD/V-space) Utilities
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Core
+/// @defgroup Weights Weights
+/// @brief Simple paths and edges of the roadmap.
+///
+/// Simple paths are defined as a sequence of intermediate nodes
+/// \f$I={q_1, q_2, \ldots, q_n}\f$ and a real value representing the length or
+/// cost of the transition between the source and goal vertex (not included in
+/// the Weight).
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Core
+/// @defgroup Roadmap Roadmap
+/// @brief The roadmap used by sampling-based planning algorithms.
+///
+/// A Roadmap is essentially a graph \f$G=(V, E)\f$ which is used to
+/// approximate a planning space (either @cfree or @cobst) commonly used by
+/// sampling-based motion planning algorithms. \f$V\f$, or the set of vertices,
+/// are all \ref Cfgs and \f$E\f$, or the set of edges, are all \ref Weights.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Core
+/// @defgroup Utilities Utilities
+/// @brief Utility classes and functions
+///
+/// The utility components of PMPL aid in input/output, statistics tracking,
+/// common geometry functions, and more.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Utilities
+/// @defgroup MPUtils Motion Planning Utilities
+/// @brief Utility classes and functions related to Motion Planning.
+///
+/// The utility components of PMPL common to motion planning. These include
+/// random number generation, geometric utilites, method sets, etc.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Utilities
+/// @defgroup MetricUtils Metric Utilities
+/// @brief Utility classes and functions related to statistics.
+///
+/// The utility components of PMPL related to timing and statistics tracking.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Utilities
+/// @defgroup IOUtils Input/Output Utilities
+/// @brief Utility classes and functions related to file input and output.
+///
+/// The utility components of PMPL common to file input and output, such as XML
+/// file parsing, path output, etc.
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// @ingroup Utilities
+/// @defgroup Exceptions Runtime Exceptions
+/// @brief PMPL's runtime exceptions.
+///
+/// PMPL provides support for various types of exceptions from input/output
+/// errors, to runtime errors, etc.
+////////////////////////////////////////////////////////////////////////////////
+

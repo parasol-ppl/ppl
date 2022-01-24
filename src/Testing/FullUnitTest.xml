@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+
+  <!-- Here we specify input files, such as environment and query. The
+       'baseFilename in the Problem node is for Simulator stat output only. -->
+  <Problem baseFilename="tmp_examples">
+
+    <Environment filename="../Examples/3D/3d.env"
+      frictionCoefficient="0" gravity="0 0 0"/>
+
+    <Robot label="boxy1" filename="../Examples/3D/boxy.robot">
+      <Agent type="pathfollowing" waypointDm="minkowski"
+        waypointThreshold=".05"/>
+    </Robot>
+
+    <Robot label="boxy2" filename="../Examples/3D/boxy.robot">
+      <Agent type="pathfollowing" waypointDm="minkowski"
+        waypointThreshold=".05"/>
+    </Robot>
+
+
+    <RobotGroup label="robotGroup" robotLabels="boxy1 boxy2"/>
+
+    <GroupTask label="groupQuery" group="robotGroup">
+      <Task label="query-1" robot="boxy1">
+        <StartConstraints>
+          <CSpaceConstraint point="0 0 0 0 0 0"/>
+        </StartConstraints>
+
+        <GoalConstraints>
+          <CSpaceConstraint point="20 5 10 0.2 0.8 0.5"/>
+        </GoalConstraints>
+      </Task>
+
+      <Task label="query-2" robot="boxy2">
+        <StartConstraints>
+          <CSpaceConstraint point="5 0 0 0 0 0"/>
+        </StartConstraints>
+
+        <GoalConstraints>
+          <CSpaceConstraint point="20 -5 10 0.2 0.8 0.5"/>
+        </GoalConstraints>
+      </Task>
+    </GroupTask>
+
+    <Robot label="coordinator" virtual="true" filename="../Examples/3D/boxy.robot" manipulator="false">
+      <Agent type="coordinator" dmLabel="minkowski" debug="true">
+        <Member label="boxy1"/>
+        <Member label="boxy2"/>
+        <StepFunction type="defaultcoordinator" debug="true"/>
+      </Agent>
+    </Robot>
+
+    <Task label="startLocation" robot="boxy1">
+      <StartConstraints>
+        <CSpaceConstraint point="0 0 0 0 0 0"/>
+      </StartConstraints>
+    </Task>
+
+    <Task label="startLocation" robot="boxy2">
+      <StartConstraints>
+        <CSpaceConstraint point="5 0 0 0 0 0"/>
+      </StartConstraints>
+    </Task>
+
+    <Task label="coordinatorTask" robot="coordinator">
+      <StartConstraints>
+        <CSpaceConstraint point="0 0 0 0 0 0"/>
+      </StartConstraints>
+    </Task>
+
+    <Decomposition label="main" taskLabel="first" coordinator="coordinator">
+
+      <SemanticTask label="top" subtaskRelation="AND"/>
+
+      <SemanticTask label="first" parent="top">
+        <Task label="query1" robot="boxy1">
+          <StartConstraints>
+            <CSpaceConstraint point="0 0 0 0 0 0"/>
+          </StartConstraints>
+
+          <GoalConstraints>
+            <CSpaceConstraint point="20 5 10 0.2 0.8 0.5"/>
+          </GoalConstraints>
+        </Task>
+      </SemanticTask>
+
+      <SemanticTask label="second" parent="top">
+        <GroupTask label="groupQuery" group="robotGroup">
+          <Task label="query-1" robot="boxy1">
+            <StartConstraints>
+              <CSpaceConstraint point="0 0 0 0 0 0"/>
+            </StartConstraints>
+
+            <GoalConstraints>
+              <CSpaceConstraint point="20 5 10 0.2 0.8 0.5"/>
+            </GoalConstraints>
+          </Task>
+
+          <Task label="query-2" robot="boxy2">
+            <StartConstraints>
+              <CSpaceConstraint point="5 0 0 0 0 0"/>
+            </StartConstraints>
+
+            <GoalConstraints>
+              <CSpaceConstraint point="20 -5 10 0.2 0.8 0.5"/>
+            </GoalConstraints>
+          </Task>
+        </GroupTask>
+      </SemanticTask>
+    </Decomposition>
+
+  </Problem>
+
+  <!-- Set available algorithms and parameters. -->
+  <Library>
+
+    <DistanceMetrics>
+      <!-- Test not yet added -->
+      <!--Minkowski label="minkowski" r1="3.0" r2="3.0" r3="0.333"
+        normalize="false"/-->
+      <Minkowski label="minkowski" r1="3.0" r2="3.0" r3="0.333"
+        normalize="false"/>
+
+      <!-- Test not yet added -->
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <AlwaysTrueValidity label="alwaysTrue"/>
+
+      <!-- Test not yet added -->
+      <CollisionDetection label="pqp_solid" method="PQP_SOLID"/>
+      <CollisionDetection label="rapid" method="RAPID"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <!-- Test not yet added -->
+      <!--BruteForceNF label="Nearest" dmLabel="minkowski" unconnected="false"
+        k="1"/-->
+      <BruteForceNF label="BFNF" dmLabel="euclidean" unconnected="false" k="10"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandom" vcLabel="alwaysTrue"/>
+    </Samplers>
+
+    <LocalPlanners>
+    <!-- Test not yet added -->
+    <StraightLine label="slAlwaysTrue" binaryEvaluation="true"
+          vcLabel="alwaysTrue"/>
+    <StraightLine label="sl" binaryEvaluation="true" vcLabel="rapid"/>
+    </LocalPlanners>
+
+    <Extenders>
+      <!-- Test not yet added -->
+      <!--BasicExtender label="BERO" debug="false" dmLabel="minkowski"
+        vcLabel="alwaysTrue" maxDist="4." minDist=".01"/-->
+    </Extenders>
+
+    <PathModifiers>
+    </PathModifiers>
+
+    <Connectors>
+    <NeighborhoodConnector label="ClosestAlwaysTrue" nfLabel="BFNF"
+      lpLabel="slAlwaysTrue" checkIfSameCC="false"/>
+    </Connectors>
+
+    <Metrics>
+    </Metrics>
+
+    <MapEvaluators>
+      <LazyQuery label="LazyQuery" debug="true"
+        vcLabel="pqp_solid" lpLabel="sl" enhanceDmLabel="euclidean"
+        numEnhance="10" d="0.5" deleteInvalid="true">
+        <NodeConnectionMethod label="ClosestAlwaysTrue"/>
+        <Resolution mult="27"/>
+        <Resolution mult="16"/>
+        <Resolution mult="1"/>
+      </LazyQuery>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <!-- Test not yet added -->
+      <!-- Basic RRT-->
+      <!--BasicRRTStrategy label="RRT" debug="false"
+        querySampler="UniformRandom" samplerLabel="UniformRandom"
+        nfLabel="Nearest" extenderLabel="BERO"
+        growGoals="false" growthFocus="0.01" m="1"
+        goalDmLabel="minkowski" goalThreshold="5"-->
+        <!--Evaluator label="Query"/-->
+      <!--/BasicRRTStrategy-->
+      <!-- LazyPRM-->
+      <BasicPRM label="LazyPRM" debug="true">
+        <Sampler label="UniformRandom" number="1" attempts="1"/>
+        <Connector label="ClosestAlwaysTrue" />
+        <Evaluator label="LazyQuery"/>
+      </BasicPRM>
+    </MPStrategies>
+
+    <MPTools>
+    </MPTools>
+
+    <!-- MPProblem allows multiple solvers to be specified and executed. -->
+
+    <!-- <Solver mpStrategyLabel="RRT" seed="12345678"
+      baseFilename="example" vizmoDebug="true"/> -->
+
+    <Solver mpStrategyLabel="LazyPRM" seed="12345678"
+      baseFilename="example" vizmoDebug="true"/>
+
+
+  </Library>
+
+  <TMPLibrary>
+    <TMPStrategies>
+      <SimpleMotionMethod label="SimpleMotion" teLabel="motionEval"/>
+    </TMPStrategies>
+
+    <PoIPlacementMethods>
+    </PoIPlacementMethods>
+
+    <TaskEvaluators>
+      <SimpleMotionEvaluator label="motionEval"/>
+    </TaskEvaluators>
+
+    <TaskDecomposers>
+    </TaskDecomposers>
+
+    <TaskAllocators>
+    </TaskAllocators>
+
+    <StateGraphs>
+    </StateGraphs>
+
+    <TMPTools>
+    </TMPTools>
+
+    <Solver tmpStrategyLabel="SimpleMotion" baseFilename="tmp_examples"/>
+  </TMPLibrary>
+
+</MotionPlanning>

@@ -1,0 +1,627 @@
+# Help ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# Each external library has one or more of the following variables related to
+# compilation:
+#  DIR     A root directory for the library's files.
+#  DEF     A set of -D directives needed to compile with the library.
+#  INCL    A set of -I directives needed to include files from the library.
+#  LIB     A set of -L and -l directives needed to link against the library.
+#  LIBFILE Any files that must be built from the library's source.
+#
+# To add a new library, define these variables as needed and add them to the
+# UTILS variables.
+
+################################################################################
+# Default system variables
+################################################################################
+UTILS_DEF  = $(CD_DEF) $(STAPL_DEF) $(CGAL_DEF) $(BOOST_DEF) $(BULLET_DEF) \
+             $(PHYSICAL_ROBOTS_DEF) $(LKH_DEF) $(MATLAB_DEFS)
+UTILS_INCL = $(CD_INCL) $(TINYXML_INCL) $(MATHTOOL_INCL) $(MODELLOADER_INCL) \
+	     $(MPNN_INCL) $(TETGEN_INCL) $(BULLET_INCL) $(PHYSICAL_ROBOTS_INCL) \
+	     $(GLVIS_INCL) $(LKH_INCL) $(DLIB_INCL) $(MATLAB_INCL) $(CGAL_INC) \
+	     $(EIGEN_INCL) #$(JSON_INCL)
+UTILS_LIB  = $(CD_LIB) $(CGAL_LIB) $(TINYXML_LIB) $(MODELLOADER_LIB) \
+	     $(MPNN_LIB) $(KMEANS_LIB) $(TETGEN_LIB) $(BULLET_LIB) \
+	     $(PHYSICAL_ROBOTS_LIBS) $(GLVIS_LIBS) $(LKH_LIBS) $(MATLAB_LIBS)
+UTILS_LIBFILE = $(CD_LIBFILE) $(TINYXML_LIBFILE) \
+		$(CGAL_LIBFILE) $(MODELLOADER_LIBFILE) \
+		$(MPNN_LIBFILE) $(KMEANS_LIBFILE) $(TETGEN_LIBFILE) \
+		$(BULLET_LIBFILE) $(GLVIS_LIBFILE) $(PHYSICAL_ROBOTS_LIBFILE) \
+		$(LKH_LIBFILE) #$(JSON_LIBFILE)
+
+ifeq ($(parallel), 1)
+  BOOST_INCL = -I$(BOOST_ROOT)/include
+  BOOST_LIBRARY_DIRS = $(BOOST_ROOT)/lib64
+  BOOST_LIB := -lboost_thread -lboost_serialization
+else
+  BOOST_LIB := -lboost_thread -lboost_system
+endif
+
+################################################################################
+# platform specific overrides
+################################################################################
+
+#linux/gcc Cray - hopper.nersc.gov || edison.nersc.gov || rain.cse.tamu.edu
+ifeq ($(platform), CRAY_gcc)
+  # first boost for rain, second for nersc machines
+  BOOST_ROOT = /opt/boost/gcc-4.7.2/boost-1.53
+  BOOST_INCL = -I$(BOOST_ROOT)/include
+  BOOST_LIBRARY_DIRS = $(BOOST_ROOT)/lib
+  BOOST_LIB = -L$(BOOST_LIBRARY_DIRS) -lboost_serialization
+endif
+
+##gcc on 64 bit MAC
+ifeq ($(platform), MACOS_gcc)
+#  #TODO Verify with and without parallel
+  BOOST_LIB := -lboost_thread-mt -lboost_system
+endif
+
+################################################################################
+## Collision Detection Libraries
+################################################################################
+CD_DIR := $(UTILS_DIR)/CD-libs
+
+# PQP
+PQP_DIR     := $(CD_DIR)/PQP_v1.2
+PQP_LIB     := -L$(PQP_DIR)/lib -lPQP
+PQP_INCL    := -I$(PQP_DIR)/include
+PQP_LIBFILE := $(PQP_DIR)/lib/libPQP.a
+$(PQP_LIBFILE):
+	@cd $(PQP_DIR) && $(MAKE) platform=$(platform) debug=$(debug)
+
+# Rapid
+RAPID_DIR     := $(CD_DIR)/RAPID
+RAPID_LIB     := -L$(RAPID_DIR) -lRAPID
+RAPID_INCL    := -I$(RAPID_DIR)
+RAPID_LIBFILE := $(RAPID_DIR)/libRAPID.a
+$(RAPID_LIBFILE):
+	@cd $(RAPID_DIR) && $(MAKE) platform=$(platform) debug=$(debug)
+
+# All collision detection
+CD_DEF     :=
+CD_INCL    := $(PQP_INCL) $(RAPID_INCL)
+CD_LIB     := $(PQP_LIB) $(RAPID_LIB)
+CD_LIBFILE := $(PQP_LIBFILE) $(RAPID_LIBFILE)
+
+################################################################################
+## EIGEN
+################################################################################
+ifeq ($(platform), MACOS_gcc)
+  EIGEN_INCL := -I/usr/local/include/eigen3
+else
+  EIGEN_INCL := -I/software/eigen-3.3.7/include/eigen3 -I/usr/include/eigen3
+endif
+
+################################################################################
+## CGAL
+################################################################################
+CGAL_INC :=
+CGAL_DEF := -DCGAL_NO_ASSERTIONS -DCGAL_NO_PRECONDITIONS -DCGAL_NO_POSTCONDITIONS
+CGAL_LIB := -lCGAL -lmpfr -lgmp
+CGAL_LIBFILE :=
+
+# Check if CGAL is available on the system. If not, we need to build it.
+ifeq ("$(wildcard /usr/lib64/libCGAL.so)","")
+  CGAL_DIR := $(CURDIR)/$(UTILS_DIR)/CGAL
+  CGAL_INC := -I$(CGAL_DIR)/install/include
+  ifeq ($(platform), MACOS_gcc)
+    CGAL_LIB := -L$(CGAL_DIR)/install/lib64 $(CGAL_LIB)
+  else
+    CGAL_LIB := -Wl,-rpath=$(CGAL_DIR)/install/lib64 \
+                -L$(CGAL_DIR)/install/lib64 $(CGAL_LIB)
+  endif
+  CGAL_LIBFILE := $(CGAL_DIR)/install
+$(CGAL_LIBFILE):
+	@echo Building CGAL library...
+	@cd $(CGAL_DIR) && $(MAKE) platform=$(platform)
+endif
+
+
+################################################################################
+## Tiny XML
+################################################################################
+TINYXML_DIR  := $(UTILS_DIR)/xml/tinyxml
+TINYXML_LIB  := -L$(TINYXML_DIR) -ltinyxml
+TINYXML_INCL := -I$(TINYXML_DIR)
+
+TINYXML_LIBFILE := $(TINYXML_DIR)/libtinyxml.a
+$(TINYXML_LIBFILE):
+	@echo Building tinyxml library...
+	@cd $(TINYXML_DIR) && $(MAKE) platform=$(platform) debug=$(debug)
+
+################################################################################
+## Mathtool
+################################################################################
+MATHTOOL_DIR  := $(UTILS_DIR)/mathtool
+MATHTOOL_INCL := -I$(MATHTOOL_DIR)
+
+################################################################################
+## Model Loader
+################################################################################
+MODELLOADER_DIR  := $(UTILS_DIR)/modelloader
+MODELLOADER_LIB  := -L$(MODELLOADER_DIR) -lmodloader
+MODELLOADER_INCL := -I$(MODELLOADER_DIR)
+
+MODELLOADER_LIBFILE := $(MODELLOADER_DIR)/libmodloader.a
+$(MODELLOADER_LIBFILE): $(CGAL_LIBFILE)
+	@echo Building modelloader library...
+	@cd $(MODELLOADER_DIR) && $(MAKE) platform=$(platform) debug=$(debug) \
+	  CGAL_DEF="$(CGAL_DEF)" CGAL_INCL="$(CGAL_INC)" CGAL_LIB="$(CGAL_LIB)"
+
+################################################################################
+## MPNN
+################################################################################
+# This lib is disabled, probably forever. We'll likely need to re-implement it
+# entirely if we ever need it (see comments in
+# deadcode/NeighborhoodFinders/MPNNNF.h).
+MPNN_DIR  := $(UTILS_DIR)/nearest_neighbors/MPNN
+MPNN_SRC  := $(MPNN_DIR)/src
+#MPNN_LIB  := -L$(MPNN_SRC) -lMPNN
+#MPNN_INCL := -I$(MPNN_DIR)/include
+#
+#MPNN_LIBFILE := $(MPNN_SRC)/libMPNN.a
+#$(MPNN_LIBFILE):
+#	@echo Building MPNN library...
+#	@cd $(MPNN_SRC) && $(MAKE) platform=$(platform) debug=$(debug)
+
+################################################################################
+## KMeans
+################################################################################
+KMEANS_DIR  := $(UTILS_DIR)/Kmeans
+KMEANS_LIB  := -L$(KMEANS_DIR) -lkmeans
+KMEANS_INCL := -I$(KMEANS_DIR)
+
+KMEANS_LIBFILE := $(KMEANS_DIR)/libkmeans.a
+$(KMEANS_LIBFILE):
+	@echo Building k-means library...
+	@cd $(KMEANS_DIR) && $(MAKE) platform=$(platform) debug=$(debug)
+
+################################################################################
+# TetGen
+################################################################################
+TETGEN_DIR  := $(UTILS_DIR)/tetgen1.5.0
+TETGEN_LIB  := $(TETGEN_DIR)/libtet.a
+TETGEN_INCL := -I$(TETGEN_DIR)
+
+TETGEN_LIBFILE := $(TETGEN_LIB)
+$(TETGEN_LIBFILE):
+	@echo Building tetgen library...
+	@cd $(TETGEN_DIR) && $(MAKE) platform=$(platform) debug=$(debug)
+
+################################################################################
+## STAPL
+################################################################################
+STAPL_DIR ?= $(UTILS_DIR)/stapl_release
+STL_LIB   ?= 4.8.2
+
+ifeq ($(parallel), 1)
+  STAPL_INCL = -I$(STAPL_DIR) -I$(STAPL_DIR)/stapl -I$(STAPL_DIR)/tools  \
+	       -I$(STAPL_DIR)/tools/libstdc++/$(STL_LIB) \
+	       -I$(STAPL_DIR)/tools/icl
+  STAPL_DEF  = -D_PARALLEL -D_STAPL -D_STAPL_MPI -D_PGRAPH -DDYNAMIC_GRAPH \
+	       -DSTAPL_RUNTIME_ENABLE_NO_COMM_GUARD -DBOOST_RESULT_OF_USE_TR1
+  STAPL_LIB  = $(STAPL_DIR)/lib/libstapl.a $(STAPL_DIR)/lib/libstapl_rt.a -lrt
+
+  STAPL_LIBFILE = $(STAPL_DIR)/lib/libstapl.a
+else
+  STAPL_INCL  = -I$(STAPL_DIR) -I$(STAPL_DIR)/stapl
+endif
+
+$(STAPL_LIBFILE):
+	@echo Building stapl library...
+	@cd $(STAPL_DIR) && $(MAKE) platform=$(platform) \
+	 stl=tools/libstdc++/$(STL_LIB)
+
+################################################################################
+## Boost
+################################################################################
+BOOST_DEF := -DBOOST_MPL_CFG_NO_PREPROCESSED_HEADERS \
+             -DBOOST_MPL_LIMIT_LIST_SIZE=30
+
+################################################################################
+# Bullet
+################################################################################
+BULLET_DIR  := $(UTILS_DIR)/bullet
+BULLET_LIB  := -L$(BULLET_DIR)/build/install/lib \
+               -lBulletInverseDynamics -lBulletDynamics -lBulletCollision \
+	       -lLinearMath -lConvexDecomposition
+BULLET_INCL := -I$(BULLET_DIR)/build/install/include/bullet
+BULLET_DEF  := -DBT_USE_DOUBLE_PRECISION
+
+BULLET_LIBFILE := $(BULLET_DIR)/build
+$(BULLET_LIBFILE):
+	@cd $(BULLET_DIR) && $(MAKE) platform=$(platform)
+
+################################################################################
+# GL
+################################################################################
+GL_INCL := -I/usr/include/GL
+GL_LIBS := -lGLU -lGL
+ifeq ($(platform), MACOS_gcc)
+  GL_LIBS := -framework GLUT -framework OpenGL
+endif
+
+################################################################################
+# Qt4
+################################################################################
+QT_BASE := /usr/include
+
+ifeq ($(platform), MACOS_gcc)
+  QT_BASE := /usr/local/opt/qt/include
+endif
+ifeq ($(platform), Ubuntu)
+  QT_BASE := /usr/include/qt4
+endif
+
+QT_INCL := -I$(QT_BASE) -I$(QT_BASE)/Qt -I$(QT_BASE)/QtCore -I$(QT_BASE)/QtGui \
+           -I$(QT_BASE)/QtOpenGL -I$(BASE)/QtWidgets -I$(BASE)QtApplication
+QT_LIBS := -lQtGui -lQtOpenGL -lQtCore
+ifeq ($(platform), MACOS_gcc)
+  QT_INCL := -I$(QT_BASE) -I$(QT_BASE)/QtCore -I$(QT_BASE)/QtGui \
+             -I$(QT_BASE)/QtOpenGL -I$(QT_BASE)/QtWidgets
+  QT_LIBS := -F/usr/local/opt/qt/Frameworks -framework QtCore -framework QtGui -framework QtOpenGL -framework QtWidgets
+endif
+
+# Moc setup
+QT_MOC_BASE = /usr/lib64/qt4/bin
+#QT_MOC_BASE = /usr/bin
+ifeq ($(platform), MACOS_gcc)
+  QT_MOC_BASE = /usr/local/opt/qt/bin
+endif
+QT_MOC  := $(shell find $(QT_MOC_BASE)/moc-qt4 2> /dev/null)
+ifeq ($(platform), Ubuntu) 
+  QT_MOC_BASE = /usr/share/qt4/bin
+  QT_MOC  := $(shell find $(QT_MOC_BASE)/moc 2> /dev/null)
+  ifndef QT_MOC
+    $(error Qt moc not found at $(QT_MOC_BASE)/moc.)
+  endif
+endif
+ifndef QT_MOC
+  $(error Qt moc not found at $(QT_MOC_BASE)/moc-qt4.)
+endif
+
+# Find the header files with Q_OBJECT.
+ifeq ($(platform), MACOS_gcc)
+  MOC_SRCS := $(patsubst ./%.h,moc_%.cpp, $(shell find . -type f \
+  		    -name '*.h' -exec grep -rl Q_OBJECT \{} + ))
+else
+  MOC_SRCS := $(patsubst ./%.h,moc_%.cpp, $(shell find . -type f \
+  		    -name '*.h' -execdir grep -rl Q_OBJECT \{} + ))
+endif
+
+# Create the list of objects which must be built from MOC_SRCS.
+MOC_OBJS := $(patsubst %.cpp,$(MOC_DIR)/%.o, $(MOC_SRCS))
+
+################################################################################
+# gl_visualizer
+################################################################################
+GLVIS_DIR   := $(UTILS_DIR)/gl_visualizer
+SANDBOX_DIR := $(GLVIS_DIR)/sandbox
+GLVIS_INCL  := -I$(GLVIS_DIR)/nonstd -I$(GLVIS_DIR)/glutils -I$(GLVIS_DIR)
+GLVIS_LIBS  := -L$(GLVIS_DIR)/nonstd -L$(GLVIS_DIR)/glutils -L$(SANDBOX_DIR) \
+               -lglsandbox -lglutils -lnonstd
+
+GLVIS_LIBFILE := $(SANDBOX_DIR)/libglsandbox.a
+$(GLVIS_LIBFILE):
+	@echo Building gl_visualizer library...
+	@cd $(SANDBOX_DIR) && $(MAKE) platform=$(platform)
+
+################################################################################
+# physicalrobots
+################################################################################
+PHYSICAL_ROBOTS_DIR := $(UTILS_DIR)/physicalrobots
+PLAYER_DIR          := $(PHYSICAL_ROBOTS_DIR)/player/build/install
+
+ifneq ($(icreate), 0)
+  ICREATE_DEF  := -DPMPL_USE_ICREATE \
+                  -DBOOST_SIGNALS_NO_DEPRECATION_WARNING
+  ICREATE_INCL := -I$(PLAYER_DIR)/include/player-3.0
+  ICREATE_LIBS := -L$(PLAYER_DIR)/lib64 \
+	      	  -lplayerc++ -lplayerc -lplayercommon -lplayercore \
+		  -lplayerinterface -lplayerjpeg -lplayertcp -lplayerudp \
+		  -lplayerwkb \
+		  -lopencv_core -lopencv_calib3d \
+		  -lboost_system -lboost_thread -lboost_signals
+
+  ICREATE_LIBFILE := $(PHYSICAL_ROBOTS_DIR)/player/build/install/lib64/libplayerc++.a
+endif
+
+ifneq ($(aruco), 0)
+  ARUCO_DEF  := -DPMPL_USE_ARUCO
+  ARUCO_INCL := -I$(PHYSICAL_ROBOTS_DIR)
+endif
+
+
+PHYSICAL_ROBOTS_DEF  := $(ICREATE_DEF) $(ARUCO_DEF)
+PHYSICAL_ROBOTS_INCL := $(ICREATE_INCL) $(ARUCO_INCL)
+PHYSICAL_ROBOTS_LIBS := $(ICREATE_LIBS)
+PHYSICAL_ROBOTS_LIBFILE := $(ICREATE_LIBFILE)
+
+$(PHYSICAL_ROBOTS_LIBFILE):
+	@echo Building physicalrobots library...
+	@cd $(PHYSICAL_ROBOTS_DIR) && $(MAKE)
+
+################################################################################
+# LKH
+################################################################################
+LKH_DIR  := $(UTILS_DIR)/LKH
+LKH_INCL := -I$(LKH_DIR)/SRC/INCLUDE
+LKH_LIBS := -L$(LKH_DIR) -lLKH
+LKH_DEF  :=
+
+LKH_LIBFILE = $(LKH_DIR)/libLKH.a
+$(LKH_LIBFILE):
+	@echo Building LKH library...
+	@cd $(LKH_DIR) && $(MAKE)
+
+################################################################################
+## dlib
+################################################################################
+DLIB_DIR  := $(UTILS_DIR)/dlib
+DLIB_INCL := -I$(DLIB_DIR)
+
+################################################################################
+## Matlab
+################################################################################
+# Matlab comes with an executable called 'mex' which will help you figure out
+# how to configure this. First find your path for 'mex' and run this to
+# configure it (using the fully-qualified path for 'mex' if needed):
+#   mex -setup -client engine C++
+# mex is basically a script which calls your regular compiler and linker with
+# the right options. To see what it is doing, try to compile a cpp file like
+# this:
+#   mex -v -client engine my_file.cpp
+# This will print out the compile/link commands amongst other things. From
+# that you can extract the includes, libs, and defines that need to be used to
+# build this object with your standard process. However, mex has an error in
+# that it assumes the matlab libraries are installed to a standard system
+# location. To fix this, you will need to replace any 'rpath-link' options
+# with 'rpath' instead.
+
+MATLAB_SRCS :=
+
+ifneq ($(matlab), 0)
+  MATLAB_DIR  := /usr/local/MATLAB/R2019a
+  MATLAB_INCL := -I$(MATLAB_DIR)/extern/include -I$(MATLAB_DIR)/simulink/include
+  MATLAB_DEFS := -DPMPL_USE_MATLAB -DMATLAB_DEFAULT_RELEASE=R2017b \
+                 -DUSE_MEX_CMD -D_GNU_SOURCE -DMATLAB_MEX_FILE -DNDEBUG
+  MATLAB_LIBS := -Wl,-rpath=$(MATLAB_DIR)/extern/bin/glnxa64 \
+			  -L$(MATLAB_DIR)/extern/bin/glnxa64 \
+		 -Wl,-rpath=$(MATLAB_DIR)/bin/glnxa64 \
+			  -L$(MATLAB_DIR)/bin/glnxa64 \
+		 -leng -lMatlabEngine -lMatlabDataArray -lmx -lmat -lm -lpthread
+
+  MATLAB_SRCS := \
+    Behaviors/Controllers/MatlabNeedleController.cpp \
+    Simulator/MatlabMicroSimulator.cpp
+
+endif
+
+################################################################################
+# nlohmann/json
+################################################################################
+
+#JSON_DIR  := $(UTILS_DIR)/nlohmann-json
+#JSON_INCL := -I$(JSON_DIR)/install
+#
+#JSON_LIBFILE := $(JSON_DIR)/install
+#$(JSON_LIBFILE):
+#	@echo Building nlohmann-json library...
+#	@cd $(JSON_DIR) && $(MAKE) platform=$(platform)
+
+################################################################################
+# Simulator
+################################################################################
+SIM_DEF  :=
+sim: SIM_DEF += -DPMPL_USE_SIMULATOR
+SIM_INCL := $(QT_INCL)
+SIM_LIBS := $(QT_LIBS) $(GL_LIBS) -lpthread
+
+SIM_SRCS := \
+  $(PMPL_DIR)/sim_main.cpp \
+
+
+
+################################################################################
+# Task Planning Sources
+################################################################################
+PLANNER_DEF  :=
+planner: PLANNER_DEF += -DPMPL_USE_SIMULATOR
+PLANNER_INCL := $(QT_INCL)
+PLANNER_LIBS := $(QT_LIBS) $(GL_LIBS) -lpthread
+TASK_SRCS := \
+  MPProblem/Robot/HardwareInterfaces/RobotCommandQueue_sim.cpp \
+  Visualization/DrawableBody.cpp \
+  Visualization/DrawableBoundary.cpp \
+  Visualization/DrawableCfg.cpp \
+  Visualization/DrawableMultiBody.cpp \
+  Visualization/DrawablePath.cpp \
+  Visualization/DrawablePolyhedron.cpp \
+  Visualization/DrawableRoadmap.cpp \
+  Visualization/DrawableWorkspaceSkeleton.cpp \
+  Visualization/Gui/EditBodyDialog.cpp \
+  Visualization/Gui/EditCfgDialog.cpp \
+  Visualization/Gui/EditConnectionDialog.cpp \
+  Visualization/Gui/EditMultiBodyDialog.cpp \
+  Visualization/Gui/EditWidgets.cpp \
+  Visualization/Gui/Setup.cpp \
+  Visualization/Gui/SliderTextWidget.cpp \
+  Visualization/Gui/TestWidget.cpp \
+  Simulator/Simulation.cpp \
+  TMPLibrary/PoIPlacementMethods/PoIPlacementMethod.cpp \
+	TMPLibrary/Solution/Plan.cpp \
+	TMPLibrary/Solution/TaskSolution.cpp \
+  TMPLibrary/StateGraphs/StateGraph.cpp \
+  TMPLibrary/TaskAllocators/TaskAllocatorMethod.cpp \
+  TMPLibrary/TaskDecomposers/TaskDecomposerMethod.cpp \
+  TMPLibrary/TaskEvaluators/SimpleMotionEvaluator.cpp \
+  TMPLibrary/TaskEvaluators/TaskEvaluatorMethod.cpp \
+  TMPLibrary/TMPBaseObject.cpp \
+	TMPLibrary/TMPStrategies/SimpleMotionMethod.cpp \
+	TMPLibrary/TMPStrategies/TMPStrategyMethod.cpp \
+  TMPLibrary/TMPTools/TMPTools.cpp \
+  Behaviors/Agents/AgentFactory_sim.cpp \
+  Behaviors/Agents/ChildAgent.cpp \
+  Behaviors/Agents/Coordinator.cpp \
+  Behaviors/Agents/PathFollowingAgent.cpp \
+  Behaviors/Agents/PlanningAgent.cpp \
+  Behaviors/Agents/StepFunctions/DefaultCoordinatorStepFunction.cpp \
+  Behaviors/Agents/StepFunctions/StepFunction.cpp \
+  Behaviors/Agents/StepFunctions/StepFunctionFactory.cpp \
+  TMPLibrary/TMPLibrary.cpp
+################################################################################
+# TMP Main
+################################################################################
+PPL_SRCS := \
+  $(PMPL_DIR)/tmp_main.cpp \
+
+################################################################################
+# Master Node
+################################################################################
+MASTER_SRCS := \
+  master_node_main.cpp \
+
+################################################################################
+# Communication
+################################################################################
+COMM_SRCS := \
+
+################################################################################
+# Planning Server
+################################################################################
+PLANNER_SRCS := \
+
+################################################################################
+# Server
+################################################################################
+CLIENT_SRCS := \
+
+################################################################################
+# Hardware
+################################################################################
+HARDWARE_SRCS := \
+  MPProblem/Robot/HardwareInterfaces/ActuatorInterface.cpp \
+  MPProblem/Robot/HardwareInterfaces/Battery.cpp \
+  MPProblem/Robot/HardwareInterfaces/Commands.cpp \
+  MPProblem/Robot/HardwareInterfaces/HardwareInterface.cpp \
+  MPProblem/Robot/HardwareInterfaces/RobotCommandQueue.cpp \
+  MPProblem/Robot/HardwareInterfaces/SensorInterface.cpp \
+  MPProblem/Robot/HardwareInterfaces/StateEstimator.cpp \
+  MPProblem/Robot/HardwareInterfaces/AverageEstimator.cpp
+
+# Also build Aruco interface if we are compiling with that option.
+ifneq ($(aruco), 0)
+  HARDWARE_SRCS += MPProblem/Robot/HardwareInterfaces/ArucoDetectorInterface.cpp \
+                   MPProblem/Robot/HardwareInterfaces/ArucoMarkerMap.cpp
+endif
+
+
+# Also build iCreate interface if we are compiling with that option.
+ifneq ($(icreate), 0)
+  HARDWARE_SRCS += MPProblem/Robot/HardwareInterfaces/ICreateInterface.cpp
+endif
+
+################################################################################
+# Testing Sources
+################################################################################
+#TEST_DEF  :=
+#tests: TEST_DEF
+TEST_INCL := 
+TEST_LIBS := 
+TEST_SRCS := \
+  tests_main.cpp \
+  Testing/MPProblem/MPProblemTests.cpp \
+  Testing/TMPLibrary/TaskAllocators/TaskAllocatorMethodTest.cpp \
+  Testing/TMPLibrary/TaskDecomposers/TaskDecomposerMethodTest.cpp \
+  Testing/TMPLibrary/TaskEvaluators/SimpleMotionEvaluatorTest.cpp \
+  Testing/TMPLibrary/TaskEvaluators/TaskEvaluatorMethodTest.cpp \
+  Testing/TMPLibrary/TMPLibraryTests.cpp \
+  Testing/TestBaseObject.cpp
+
+################################################################################
+# PMPL
+################################################################################
+PMPL_DEF  := -D$(ROBOT_DEF)
+PMPL_INCL := -I$(PMPL_DIR)
+PMPL_LIB  := -L$(PMPL_DIR) -lobprm
+
+PMPL_LIBFILE := $(PMPL_DIR)/libobprm.a
+
+PMPL_SRCS := \
+  Behaviors/Agents/Agent.cpp \
+  Behaviors/Agents/AgentFactory_pmpl.cpp \
+  Behaviors/Controllers/CarlikeNeedleController.cpp \
+  Behaviors/Controllers/ControllerMethod.cpp \
+  Behaviors/Controllers/ControlSetGenerators.cpp \
+  Behaviors/Controllers/SimpleController.cpp \
+  Behaviors/Controllers/ICreateController.cpp \
+  ConfigurationSpace/Cfg.cpp \
+  ConfigurationSpace/GroupCfg.cpp \
+  ConfigurationSpace/ReachableVolumes.cpp \
+  Geometry/GMSPolygon.cpp \
+  Geometry/GMSPolyhedron.cpp \
+  Geometry/Bodies/Body.cpp \
+  Geometry/Bodies/Chain.cpp \
+  Geometry/Bodies/Connection.cpp \
+  Geometry/Bodies/DHParameters.cpp \
+  Geometry/Bodies/MultiBody.cpp \
+  Geometry/Boundaries/AbstractBoundingBox.cpp \
+  Geometry/Boundaries/AbstractBoundingSphere.cpp \
+  Geometry/Boundaries/AbstractBoundingSphericalShell.cpp \
+  Geometry/Boundaries/Boundary.cpp \
+  Geometry/Boundaries/BoundaryIntersection.cpp \
+  Geometry/Boundaries/CSpaceBoundingBox.cpp \
+  Geometry/Boundaries/CSpaceBoundingSphere.cpp \
+  Geometry/Boundaries/TetrahedralBoundary.cpp \
+  Geometry/Boundaries/WorkspaceBoundingBox.cpp \
+  Geometry/Boundaries/WorkspaceBoundingSphere.cpp \
+  Geometry/Boundaries/WorkspaceBoundingSphericalShell.cpp \
+  Geometry/Shapes/NBox.cpp \
+  Geometry/Shapes/NSphere.cpp \
+  Geometry/Shapes/NSphericalShell.cpp \
+  MPLibrary/MPTools/MeanCurvatureSkeleton3D.cpp \
+  MPLibrary/MPTools/ReebGraphConstruction.cpp \
+  MPLibrary/MPTools/RegionKit.cpp \
+  MPLibrary/MPTools/TetGenDecomposition.cpp \
+  MPLibrary/ValidityCheckers/CollisionDetection/CDInfo.cpp \
+  MPLibrary/ValidityCheckers/CollisionDetection/CollisionDetectionMethod.cpp \
+  MPLibrary/ValidityCheckers/CollisionDetection/RapidCollisionDetection.cpp \
+  MPLibrary/ValidityCheckers/CollisionDetection/PQPCollisionDetection.cpp \
+  MPLibrary/ValidityCheckers/CollisionDetection/SpheresCollisionDetection.cpp \
+  MPProblem/MPProblem.cpp \
+  MPProblem/MPTask.cpp \
+  MPProblem/GroupTask.cpp \
+  MPProblem/InteractionInformation.cpp \
+  MPProblem/Constraints/Constraint.cpp \
+  MPProblem/Constraints/BoundaryConstraint.cpp \
+  MPProblem/Constraints/CSpaceConstraint.cpp \
+  MPProblem/DynamicObstacle.cpp \
+  MPProblem/Environment/Environment.cpp \
+  MPProblem/Robot/Actuator.cpp \
+  MPProblem/Robot/Control.cpp \
+  MPProblem/Robot/Robot.cpp \
+  MPProblem/Robot/HardwareInterfaces/RobotCommandQueue_pmpl.cpp \
+  MPProblem/RobotGroup/RobotGroup.cpp \
+  MPProblem/TaskHierarchy/Decomposition.cpp \
+  MPProblem/TaskHierarchy/SemanticTask.cpp \
+  MPProblem/TaskHierarchy/SubtaskFlow.cpp \
+  Simulator/BulletEngine.cpp \
+  Simulator/BulletModel.cpp \
+  Simulator/Conversions.cpp \
+  Simulator/MicroSimulator.cpp \
+  Utilities/ClockClass.cpp \
+  Utilities/CountingStreamBuffer.cpp \
+  Utilities/IOUtils.cpp \
+  Utilities/MedialAxis2D.cpp \
+  Utilities/MetricUtils.cpp \
+  Utilities/MPUtils.cpp \
+  Utilities/SSSP.cpp \
+  Utilities/XMLNode.cpp \
+  Workspace/GridOverlay.cpp \
+  Workspace/WorkspaceDecomposition.cpp \
+  Workspace/WorkspacePortal.cpp \
+  Workspace/WorkspaceRegion.cpp \
+  Workspace/WorkspaceSkeleton.cpp \
+  MPLibrary/PMPL.cpp \
+  $(MATLAB_SRCS)
+  #Behaviors/Controllers/PIDFeedback.cpp \

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/3D/3d.env"/>
+    <Robot label="boxy" filename="../Envs/3D/boxy.robot"/>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <AlwaysTrueValidity label="alwaysTrue"/>
+      <CollisionDetection label="rapid" method="RAPID"/>
+      <CollisionDetection label="pqp" method="PQP"/>
+      <CollisionDetection label="pqp_solid" method="PQP_SOLID"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="BFNF" dmLabel="euclidean" unconnected="false" k="5"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="pqp_solid" debug="true"/>
+    </Samplers>
+
+    <LocalPlanners>
+      <StraightLine label="sl" binaryEvaluation="true" vcLabel="pqp_solid"/>
+    </LocalPlanners>
+
+    <Connectors>
+      <NeighborhoodConnector label="Closest" debug="true"
+        nfLabel="BFNF" lpLabel="sl" checkIfSameCC="false"/>
+    </Connectors>
+
+    <Metrics>
+      <NumNodesMetric label="NumNodes"/>
+    </Metrics>
+
+    <MapEvaluators>
+      <ConditionalEvaluator label="NodesEval" metric_method="NumNodes"
+        value="100" operator=">="/>
+
+      <QueryMethod label="Query" debug="false"
+        graphSearchAlg="dijkstras"/>
+    </MapEvaluators>
+
+    <MPStrategies>
+
+      <TogglePRMStrategy label="TogglePRM" vcLabel="pqp_solid" priority="true">
+        <Sampler label="UniformRandomFree" number="10" attempts="1"/>
+        <Connector label="Closest"/>
+        <ColConnector label="Closest"/>
+        <Evaluator label="NodesEval"/>
+      </TogglePRMStrategy>
+
+      <ValidationStrategy label="Test" target="TogglePRM" debug="true">
+        <GoldStandard robot="boxy" type="roadmap"
+          filename="../Outputs/TogglePRM.1.12345678.map"/>
+      </ValidationStrategy>
+
+    </MPStrategies>
+
+ <!--   <Solver mpStrategyLabel="TogglePRM" seed="12345678"
+      baseFilename="../Outputs/TogglePRM.1"/> -->
+
+     <Solver mpStrategyLabel="Test" seed="12345678"
+      baseFilename="../Scratch/TogglePRM.1"/> 
+
+
+
+  </Library>
+</MotionPlanning>

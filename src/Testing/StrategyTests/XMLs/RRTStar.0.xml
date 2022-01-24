@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MotionPlanning warnings="true" warningsAsErrors="true" print="false">
+  <Problem>
+    <Environment filename="../Envs/2D/2d.env"/>
+    <Robot label="boxy" filename="../Envs/2D/boxy.robot"/>
+
+    <Task label="query" robot="boxy">
+      <StartConstraints>
+        <CSpaceConstraint point="-10 -10"/>
+      </StartConstraints>
+
+      <GoalConstraints>
+        <CSpaceConstraint bbx="[9.8:10.2 ; 9.8:10.2]"/>
+      </GoalConstraints>
+    </Task>
+  </Problem>
+
+  <Library>
+    <DistanceMetrics>
+      <Euclidean label="euclidean"/>
+    </DistanceMetrics>
+
+    <ValidityCheckers>
+      <CollisionDetection label="cd" method="RAPID"/>
+      <AlwaysTrueValidity label="AlwaysTrue"/>
+    </ValidityCheckers>
+
+    <NeighborhoodFinders>
+      <BruteForceNF label="Nearest"
+        dmLabel="euclidean" unconnected="false" k="1"/>
+      <OptimalNF label="OptimalK"
+        nfType="k" dmLabel="euclidean" exLabel="BERO"/>
+      <OptimalNF label="OptimalRadius"
+        nfType="radius" dmLabel="euclidean" exLabel="BERO"/>
+    </NeighborhoodFinders>
+
+    <Samplers>
+      <UniformRandomSampler label="UniformRandomFree" vcLabel="cd"/>
+      <UniformRandomSampler label="UniformRandom" vcLabel="AlwaysTrue"/>
+    </Samplers>
+
+    <Extenders>
+      <BasicExtender label="BERO" debug="false"
+        dmLabel="euclidean" vcLabel="cd" maxDist="1" minDist=".001"/>
+    </Extenders>
+
+    <LocalPlanners>
+      <StraightLine label="sl" binaryEvaluation="true" vcLabel="cd"/>
+    </LocalPlanners>
+
+    <Connectors>
+      <RewireConnector label="Rewire" debug="true"
+        nfLabel="OptimalK" lpLabel="sl"/>
+    </Connectors>
+
+    <Metrics>
+      <NumNodesMetric label="NumNodes"/>
+    </Metrics>
+
+    <MapEvaluators>
+      <ConditionalEvaluator label="NodeLimit" metric_method="NumNodes"
+        value="515" operator=">="/>
+      <QueryMethod label="Query" debug="true"/>
+
+      <!-- Sample more nodes than we need to test path refinement. -->
+      <ComposeEvaluator label="QueryMinSize" operator="and" debug="true">
+        <Evaluator label="Query"/>
+        <Evaluator label="NodeLimit"/>
+      </ComposeEvaluator>
+    </MapEvaluators>
+
+    <MPStrategies>
+      <BasicRRTStrategy label="RRT*" debug="true"
+        querySampler="UniformRandomFree" samplerLabel="UniformRandom"
+        nfLabel="Nearest" extenderLabel="BERO" goalDmLabel="euclidean"
+        connectorLabel="Rewire"
+        growGoals="false" m="1" growthFocus="0.01">
+        <Evaluator label="QueryMinSize"/>
+      </BasicRRTStrategy>
+
+      <ValidationStrategy label="Test" target="RRT*" debug="true">
+        <GoldStandard robot="boxy" type="roadmap"
+          filename="../Outputs/RRTStar.0.query.map"/>
+        <GoldStandard robot="boxy" type="cfgpath"
+          filename="../Outputs/RRTStar.0.query.rdmp.path"/>
+        <GoldStandard label="pathlength" type="history"
+          filename="../Outputs/RRTStar.0.query.pathlength.hist"/>
+      </ValidationStrategy>
+    </MPStrategies>
+
+    <Solver mpStrategyLabel="Test" seed="0"
+        baseFilename="../Scratch/RRTStar"/>
+
+  </Library>
+</MotionPlanning>

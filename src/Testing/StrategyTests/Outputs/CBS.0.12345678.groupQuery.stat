@@ -1,0 +1,59 @@
+
+
+Sampler Statistics                                            Attempts Successes
+
+  UniformRandomSampler::UniformRandomFree                          112        96
+  All Samplers                                                     112        96
+  Success Rate: 85.7%
+
+
+Local Planner Statistics                        Attempts Connections    CD Calls
+
+  StraightLine::sl                                   507         300       18882
+
+
+Collision Detection Calls                                                  Count
+
+  StraightLine::sl::IsConnectedSLSequential                                18882
+  UniformRandomSampler::UniformRandomFree::Sampler                           112
+  All Collision Detectors                                                  18994
+
+
+Other Statistics                                                           Value
+
+  Graph Search                                                                20
+  GroupDecoupledQuery::AvgVertices                                            12
+  GroupDecoupledQuery::TotalCost                                            92.7
+  QueryMethod::IndividualQuery::FoundPath                                      1
+
+
+Averages                                                         Value     Count
+
+  NeighborhoodConnector::Closest::CacheHitRatio                      0       496
+
+
+Clock Name                                                        Time (Seconds)
+
+  BasicPRM::IndividualPRM::Connect                                          1.33
+  BasicPRM::IndividualPRM::EvaluateMap                                     0.002
+  BasicPRM::IndividualPRM::GenerateGoals                                0.000165
+  BasicPRM::IndividualPRM::GenerateStart                                 6.4e-05
+  BasicPRM::IndividualPRM::InitAndRun                                       1.34
+  BasicPRM::IndividualPRM::Initialize                                     0.0583
+  BasicPRM::IndividualPRM::Run                                              1.27
+  BasicPRM::IndividualPRM::Sample                                        0.00346
+  BruteForceNF::BFNF::FindNeighbors                                        0.007
+  CBSQuery::CBSQuery                                                       0.131
+  CBSQuery::CBSQuerySolveIndividualTask                                   0.0163
+  CCTracker::AddEdge                                                       0.001
+  CCTracker::AddVertex                                                         0
+  ComposeEvaluator::BoundedIndividualQuery                                 0.002
+  GroupDecoupledStrategy::CBSPRM::EvaluateMap                              0.131
+  GroupDecoupledStrategy::CBSPRM::InitAndRun                                1.47
+  GroupDecoupledStrategy::CBSPRM::Initialize                                   0
+  GroupDecoupledStrategy::CBSPRM::Run                                       1.47
+  MPLibrary::Initialize                                                  0.00024
+  NeighborhoodConnector::Closest::Connect                                   1.33
+  QueryMethod::GeneratePath                                               0.0144
+  StraightLine::sl::IsConnected                                             1.34
+  UniformRandomSampler::UniformRandomFree::Sample                        0.00272

@@ -1,0 +1,55 @@
+Roadmap Statistics:
+
+  Number of Nodes: 100
+  Number of Edges: 840
+
+  There are 1 connected components:
+    CC[0]: 100 (vid 0)
+
+
+Sampler Statistics                                            Attempts Successes
+
+  UniformRandomSampler::UniformRandomFree                           60        47
+  All Samplers                                                      60        47
+  Success Rate: 78.3%
+
+
+Local Planner Statistics                        Attempts Connections    CD Calls
+
+  StraightLine::sl                                   820         700      166388
+
+
+Collision Detection Calls                                                  Count
+
+  StraightLine::sl::IsConnectedSLBinary                                   166388
+  UniformRandomSampler::UniformRandomFree::Sampler                            60
+  All Collision Detectors                                                 166448
+
+
+Other Statistics                                                           Value
+
+  QueryMethod::Query::FoundPath                                                0
+
+
+Averages                                                         Value     Count
+
+  NeighborhoodConnector::Closest::CacheHitRatio                 0.0498      1305
+
+
+Clock Name                                                        Time (Seconds)
+
+  BruteForceNF::Nearest::FindNeighbors                                   0.00243
+  CCTracker::AddEdge                                                     0.00429
+  CCTracker::AddVertex                                                   2.9e-05
+  ConditionalEvaluator::NodesEval                                              0
+  MPLibrary::Initialize                                                        0
+  NeighborhoodConnector::Closest::Connect                                   2.47
+  StraightLine::sl::IsConnected                                             2.05
+  TogglePRMStrategy::ConnectHelper                                          2.47
+  TogglePRMStrategy::GenerateNodes                                       0.00397
+  TogglePRMStrategy::TogglePRM::Connect                                  5.9e-05
+  TogglePRMStrategy::TogglePRM::EvaluateMap                                    0
+  TogglePRMStrategy::TogglePRM::InitAndRun                                  2.48
+  TogglePRMStrategy::TogglePRM::Initialize                               5.9e-05
+  TogglePRMStrategy::TogglePRM::Run                                         2.48
+  UniformRandomSampler::UniformRandomFree::Sample                        0.00397
