@@ -33,7 +33,7 @@ sudo apt-get update
 sudo apt-get install build-essential libboost-all-dev make cmake libmpfr-dev libeigen3-dev
 ```
 
-PMPL uses an old version of qt4 that is not available on the standard
+PPL uses an old version of qt4 that is not available on the standard
 repositories. Please run the following commands to install qt4:
 ```
 sudo add-apt-repository -y ppa:rock-core/qt4
