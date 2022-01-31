@@ -4,7 +4,7 @@ digraph "Utilities"
   node [fontname="Helvetica",fontsize="10",shape=box];
   rankdir=LR;
   Node2 [label="Core",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Core.html",tooltip=" "];
-  Node7 [label="Runtime Exceptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Exceptions.html",tooltip="PMPL's runtime exceptions."];
+  Node7 [label="Runtime Exceptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Exceptions.html",tooltip="PPL's runtime exceptions."];
   Node6 [label="Input/Output Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IOUtils.html",tooltip="Utility classes and functions related to file input and output."];
   Node4 [label="Motion Planning Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MPUtils.html",tooltip="Utility classes and functions related to Motion Planning."];
   Node5 [label="Metric Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MetricUtils.html",tooltip="Utility classes and functions related to statistics."];
