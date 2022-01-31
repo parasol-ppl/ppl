@@ -1,11 +1,11 @@
-// The following is the algorithm abstractions of PMPL, along with the detailed
+// The following is the algorithm abstractions of PPL, along with the detailed
 // descriptions and subsections. All subsections should appear in the desired
 // order of appearance, and are defined by @defgroup. Source code that belongs
 // in a section or subsection should indicate as such with @addtogroup.
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @defgroup AlgorithmAbstractions Algorithm Abstractions
-/// The algorithm abstractions in PMPL are:
+/// The algorithm abstractions in PPL are:
 /// - \ref DistanceMetrics - Compute distances between two configurations
 /// - \ref ValidityCheckers - Determine if a configuration is in @cfree or
 ///        @cobst
@@ -25,7 +25,7 @@
 /// - \ref RegionDecomposition - Region framework to split space for divide and
 ///        conquer methods
 /// - \ref MotionPlanningStrategies - Loosely, construct a roadmap, but more
-///        generally are anything executable by PMPL, e.g., solve this problem
+///        generally are anything executable by PPL, e.g., solve this problem
 ///        or smooth this path
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -189,7 +189,7 @@
 /// @ingroup AlgorithmAbstractions
 /// @defgroup MotionPlanningStrategies Motion Planning Strategies
 /// @brief Motion Planning Strategies (@mps) loosely, construct a roadmap, but
-/// more generally are anything executable by PMPL, e.g., solve this problem or
+/// more generally are anything executable by PPL, e.g., solve this problem or
 /// smooth this path.
 ///
 /// A Motion Planning Strategy (\mps) essentially orchestrates the creation of
@@ -197,7 +197,7 @@
 /// or the algorithms used to solve a problem, e.g., @prm or @rrt. They are not
 /// restricted to solving motion planning problems, but could be as simple as
 /// load a previously constructed roadmap and evaluate it, etc. These are
-/// "executed" by PMPL.
+/// "executed" by PPL.
 /// The base method can be found in MPStrategyMethod.h.
 ////////////////////////////////////////////////////////////////////////////////
 

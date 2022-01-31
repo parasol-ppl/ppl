@@ -1,11 +1,11 @@
-// The following is the core components of PMPL, along with the detailed
+// The following is the core components of PPL, along with the detailed
 // descriptions and subsections. All subsections should appear in the desired
 // order of appearance, and are defined by @defgroup. Source code that belongs
 // in a section or subsection should indicate as such with @addtogroup.
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @defgroup Core Core
-/// The core components of PMPL shared by all its algorithmic abstractions are:
+/// The core components of PPL shared by all its algorithmic abstractions are:
 /// - \ref MotionPlanningUniverse - MPProblem and MPTraits
 /// - \ref Environment - The workspace of the motion planning problem
 /// - \ref Cfgs - Configurations and @cspace
@@ -18,12 +18,12 @@
 /// @ingroup Core
 /// @defgroup MotionPlanningUniverse Motion Planning Universe
 /// @brief Core access to, storage of, and availability for loading of
-/// everything in PMPL.
+/// everything in PPL.
 ///
 /// The Motion Planning Universe is defined by two main components: the Motion
 /// Planning Problem (defined in MPProblem.h) and the Motion Planning Traits
 /// (defined in MPTraits.h). The Motion Planning Problem is the central access
-/// hub of everything in PMPL. The Motion Planning Traits define what methods
+/// hub of everything in PPL. The Motion Planning Traits define what methods
 /// can be used within the scope of that compilation, i.e., loaded or added into
 /// the program.
 ////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@
 /// @defgroup Utilities Utilities
 /// @brief Utility classes and functions
 ///
-/// The utility components of PMPL aid in input/output, statistics tracking,
+/// The utility components of PPL aid in input/output, statistics tracking,
 /// common geometry functions, and more.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -113,7 +113,7 @@
 /// @defgroup MPUtils Motion Planning Utilities
 /// @brief Utility classes and functions related to Motion Planning.
 ///
-/// The utility components of PMPL common to motion planning. These include
+/// The utility components of PPL common to motion planning. These include
 /// random number generation, geometric utilites, method sets, etc.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -122,7 +122,7 @@
 /// @defgroup MetricUtils Metric Utilities
 /// @brief Utility classes and functions related to statistics.
 ///
-/// The utility components of PMPL related to timing and statistics tracking.
+/// The utility components of PPL related to timing and statistics tracking.
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -130,16 +130,16 @@
 /// @defgroup IOUtils Input/Output Utilities
 /// @brief Utility classes and functions related to file input and output.
 ///
-/// The utility components of PMPL common to file input and output, such as XML
+/// The utility components of PPL common to file input and output, such as XML
 /// file parsing, path output, etc.
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @ingroup Utilities
 /// @defgroup Exceptions Runtime Exceptions
-/// @brief PMPL's runtime exceptions.
+/// @brief PPL's runtime exceptions.
 ///
-/// PMPL provides support for various types of exceptions from input/output
+/// PPL provides support for various types of exceptions from input/output
 /// errors, to runtime errors, etc.
 ////////////////////////////////////////////////////////////////////////////////
 
