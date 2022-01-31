@@ -93,3 +93,6 @@ To build the simulator, go to `src` and run `make sim`.
 ## Tests
 
 To run the tests, go to `src/Test` and run `tests.py`.
+
+## Documentation
+The documentation for PPL can be found at [PPL Documentation](https://github.com/parasol-ppl/PPL)
