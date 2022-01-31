@@ -1,0 +1,17 @@
+digraph "Geometry"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_68267d1309a1af8e8297ef4c3efbcdba {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,dashed,", label="src", fontname="Helvetica", fontsize="10", URL="dir_68267d1309a1af8e8297ef4c3efbcdba.html"]
+  subgraph clusterdir_cae27912e177176a90175eee3a6288a5 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,bold,", label="", fontname="Helvetica", fontsize="10", URL="dir_cae27912e177176a90175eee3a6288a5.html"]
+    dir_cae27912e177176a90175eee3a6288a5 [shape=plaintext, label="Geometry"];
+  dir_b97f542d3bd3d9b4054ff72be75a881d [shape=box, label="Bodies", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_b97f542d3bd3d9b4054ff72be75a881d.html"];
+  dir_2a602835586a5f02994f46d190060102 [shape=box, label="Boundaries", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_2a602835586a5f02994f46d190060102.html"];
+  dir_3680793c6873fbfdcd0cd584bf63bbca [shape=box, label="Shapes", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_3680793c6873fbfdcd0cd584bf63bbca.html"];
+  }
+  }
+}

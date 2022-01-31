@@ -1,0 +1,31 @@
+digraph "Algorithm Abstractions"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node1 [label="Algorithm Abstractions",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node8 [label="Connectors",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Connectors.html",tooltip="Connectors (C) generate edges of a roadmap, usually a combination of a neighborhood finder and a loca..."];
+  Node2 [label="Distance Metrics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__DistanceMetrics.html",tooltip="Distance Metrics (DM) compute distances between two configurations."];
+  Node7 [label="Extenders",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Extenders.html",tooltip="Extenders (E) step configurations toward a direction until an end condition is met,..."];
+  Node6 [label="Local Planners",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__LocalPlanners.html",tooltip="Local Plannners (LP) validate simple, often deterministic paths, between configurations."];
+  Node10 [label="Map Evaluators",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MapEvaluators.html",tooltip="Map Evaluators (ME) determine if a roadmap passes an evaluation test, e.g., can solve an example quer..."];
+  Node9 [label="Metrics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Metrics.html",tooltip="Metrics (M) determine a value/property from a roadmap."];
+  Node13 [label="Motion Planning Strategies",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MotionPlanningStrategies.html",tooltip="Motion Planning Strategies (MPS) loosely, construct a roadmap, but more generally are anything execut..."];
+  Node5 [label="Neighborhood Finders",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__NeighborhoodFinders.html",tooltip="Neighborhood Finders (NF) determine nearest neighbors within a roadmap."];
+  Node11 [label="Path Modifiers",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__PathModifiers.html",tooltip="Path Modifiers (PM) smooth/modify an input path to produce a new valid path."];
+  Node12 [label="Region Decomposition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__RegionDecomposition.html",tooltip="Region framework to split space for divide and conquer methods."];
+  Node4 [label="Samplers",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Samplers.html",tooltip="Samplers (S) generate configurations in  (usually )."];
+  Node3 [label="Validity Checkers",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__ValidityCheckers.html",tooltip="Validity Checkers (VC) determine if a configuration is in  or ."];
+  Node1->Node2 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node6 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node7 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node8 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node9 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node10 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node11 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node12 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node13 [shape=plaintext, dir="back", style="solid"];
+}

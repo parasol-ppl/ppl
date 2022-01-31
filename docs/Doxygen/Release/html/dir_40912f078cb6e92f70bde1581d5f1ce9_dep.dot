@@ -1,0 +1,11 @@
+digraph "CollisionDetection"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_049fe72adf8090d9bce44800e45b5d8a {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", style="filled,dashed,", label="ValidityCheckers", fontname="Helvetica", fontsize="10", URL="dir_049fe72adf8090d9bce44800e45b5d8a.html"]
+  dir_40912f078cb6e92f70bde1581d5f1ce9 [shape=box, label="CollisionDetection", style="filled,bold,", fillcolor="#edf0f7", color="grey25", URL="dir_40912f078cb6e92f70bde1581d5f1ce9.html"];
+  }
+}

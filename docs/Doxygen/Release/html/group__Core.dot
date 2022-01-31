@@ -1,0 +1,19 @@
+digraph "Core"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node4 [label="Configuration Types",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Cfgs.html",tooltip="Configuration Space ( ) Abstraction."];
+  Node1 [label="Core",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node3 [label="Environment",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Environment.html",tooltip="The workspace of the motion planning problem."];
+  Node2 [label="Motion Planning Universe",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MotionPlanningUniverse.html",tooltip="Core access to, storage of, and availability for loading of everything in PMPL."];
+  Node6 [label="Roadmap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Roadmap.html",tooltip="The roadmap used by sampling-based planning algorithms."];
+  Node7 [label="Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Utilities.html",tooltip="Utility classes and functions."];
+  Node5 [label="Weights",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Weights.html",tooltip="Simple paths and edges of the roadmap."];
+  Node1->Node2 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node6 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node7 [shape=plaintext, dir="back", style="solid"];
+}

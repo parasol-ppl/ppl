@@ -1,0 +1,14 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Agent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAgent.html",tooltip=" "];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Coordinator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classCoordinator.html",tooltip=" "];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="PlanningAgent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPlanningAgent.html",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PathFollowingAgent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPathFollowingAgent.html",tooltip=" "];
+}

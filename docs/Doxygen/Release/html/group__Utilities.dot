@@ -1,0 +1,23 @@
+digraph "Utilities"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node2 [label="Core",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Core.html",tooltip=" "];
+  Node7 [label="Runtime Exceptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Exceptions.html",tooltip="PMPL's runtime exceptions."];
+  Node6 [label="Input/Output Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IOUtils.html",tooltip="Utility classes and functions related to file input and output."];
+  Node4 [label="Motion Planning Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MPUtils.html",tooltip="Utility classes and functions related to Motion Planning."];
+  Node5 [label="Metric Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MetricUtils.html",tooltip="Utility classes and functions related to statistics."];
+  Node9 [label="Motion Planning Stategy\l Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__MotionPlanningStrategyUtils.html",tooltip="External data structures to help neighborhood finding algorithms."];
+  Node8 [label="Neighborhood Finder\l Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__NeighborhoodFinderUtils.html",tooltip="External data structures to help neighborhood finding algorithms."];
+  Node3 [label="Reachable Distance\l/Volume Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__ReachableUtils.html",tooltip="Reachable Distance/Volumn Space (RD/V-space) Utilities."];
+  Node1 [label="Utilities",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Utility classes and functions."];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node6 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node7 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node8 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node9 [shape=plaintext, dir="back", style="solid"];
+}

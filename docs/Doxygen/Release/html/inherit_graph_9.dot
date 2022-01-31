@@ -1,0 +1,32 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Boundary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classBoundary.html",tooltip=" "];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="AbstractBoundingBox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAbstractBoundingBox.html",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="CSpaceBoundingBox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classCSpaceBoundingBox.html",tooltip="An n-dimensional bounding box in c-space."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="WorkspaceBoundingBox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classWorkspaceBoundingBox.html",tooltip="A two or three dimensional bounding box in workspace."];
+  Node0 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="AbstractBoundingSphere",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAbstractBoundingSphere.html",tooltip=" "];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="CSpaceBoundingSphere",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classCSpaceBoundingSphere.html",tooltip="An n-dimensional bounding sphere in c-space."];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="WorkspaceBoundingSphere",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classWorkspaceBoundingSphere.html",tooltip="A 2 or 3 dimensional bounding sphere in workspace."];
+  Node0 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="AbstractBoundingSpherical\lShell",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAbstractBoundingSphericalShell.html",tooltip=" "];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="WorkspaceBoundingSpherical\lShell",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classWorkspaceBoundingSphericalShell.html",tooltip="A 2 or 3 dimensional bounding spherical shell in workspace."];
+  Node0 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TetrahedralBoundary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classTetrahedralBoundary.html",tooltip="A tetrahedral bounding region in workspace."];
+  Node4 [label="NBox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classNBox.html",tooltip="An axis-aligned rectangular prism in n dimensions."];
+  Node4 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="NSphere",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classNSphere.html",tooltip=" "];
+  Node8 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="NSphericalShell",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classNSphericalShell.html",tooltip=" "];
+  Node11 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

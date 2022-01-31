@@ -1,0 +1,9 @@
+digraph "Map Evaluators"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node2 [label="Algorithm Abstractions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__AlgorithmAbstractions.html",tooltip=" "];
+  Node1 [label="Map Evaluators",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Map Evaluators (ME) determine if a roadmap passes an evaluation test, e.g., can solve an example quer..."];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+}

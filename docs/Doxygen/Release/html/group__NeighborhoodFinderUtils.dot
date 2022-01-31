@@ -1,0 +1,11 @@
+digraph "Neighborhood Finder Utilities"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node1 [label="Neighborhood Finder\l Utilities",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="External data structures to help neighborhood finding algorithms."];
+  Node2 [label="Neighborhood Finders",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__NeighborhoodFinders.html",tooltip="Neighborhood Finders (NF) determine nearest neighbors within a roadmap."];
+  Node3 [label="Utilities",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__Utilities.html",tooltip="Utility classes and functions."];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node3->Node1 [shape=plaintext, dir="back", style="solid"];
+}

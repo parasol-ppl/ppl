@@ -1,0 +1,11 @@
+digraph "HardwareInterfaces"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_59e32df584e89b8b1e470d3dad3bfe27 {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", style="filled,dashed,", label="Robot", fontname="Helvetica", fontsize="10", URL="dir_59e32df584e89b8b1e470d3dad3bfe27.html"]
+  dir_66a43cd648b71ed5dcd592f98db1a5c7 [shape=box, label="HardwareInterfaces", style="filled,bold,", fillcolor="#edf0f7", color="grey25", URL="dir_66a43cd648b71ed5dcd592f98db1a5c7.html"];
+  }
+}

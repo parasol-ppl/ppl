@@ -1,0 +1,11 @@
+digraph "Traits"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_68267d1309a1af8e8297ef4c3efbcdba {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,dashed,", label="src", fontname="Helvetica", fontsize="10", URL="dir_68267d1309a1af8e8297ef4c3efbcdba.html"]
+  dir_dd0186e88bcf2261bcfae13d9c9e18a7 [shape=box, label="Traits", style="filled,bold,", fillcolor="#edf0f7", color="grey25", URL="dir_dd0186e88bcf2261bcfae13d9c9e18a7.html"];
+  }
+}
