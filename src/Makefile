@@ -45,7 +45,7 @@ parallel ?= 0
 # Directory Layout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 PMPL_DIR  := .
-UTILS_DIR := ../pmpl_utils
+UTILS_DIR := ../ppl_utils
 
 # The OBJ_DIR is the landing zone for our object files. Create it with a
 # directory structure to match our source tree.
