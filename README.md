@@ -5,7 +5,7 @@ This file lists the package dependencies for PPL and how to install them.
 > Tested on Ubuntu 20.04
 
 ## Requirements
-The utilities for PPL can be found in [PPL utils](https://github.com/parasol-ppl/PPL_utils)
+The utilities for PPL can be found in [ppl utils](https://github.com/parasol-ppl/ppl_utils)
 
 Required Packages:
 - build-essential
@@ -95,4 +95,4 @@ To build the simulator, go to `src` and run `make sim`.
 To run the tests, go to `src/Test` and run `tests.py`.
 
 ## Documentation
-The documentation for PPL can be found at [PPL Documentation](https://parasol-ppl.github.io/PPL)
+The documentation for PPL can be found at [ppl Documentation](https://parasol-ppl.github.io/ppl)
